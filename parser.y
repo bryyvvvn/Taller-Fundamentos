@@ -2,16 +2,20 @@
 #include <stdio.h> //Permite usar prints 
 #include <stdlib.h> //Incluye las funcionalidades para asginar espacios de memoria
 #include <string.h> //Permite utilizar funciones para manejar cadenas
+#include <nodoAst.h> //Incluye el .h del arbol
 
 // Función para errores
 void yyerror(const char *s);
 int yylex(void);
+
+ASTNode *raiz = NULL;
 %}
 
 %union {
     int ival;
     float fval;
     char *sval;
+    ASTNode *nodo;
 }
 
 %token <ival> INT
@@ -26,20 +30,20 @@ int yylex(void);
 %token IF ELSE WHILE
 %token PRINT READ
 
-%token IGUALEICHON DIFERENTEICHON MENOR A MENOR O IGUAL A MAYOR A MAYOR O IGUAL A
+%token IGUALEICHON DIFERENTEICHON MENOR_A MENOR_O_IGUAL_A MAYOR_A MAYOR_O_IGUAL_A
 %token ADICION RESTACION MULTIPLICATEICHON DIVISEISHON
 %token ASSIGN SEMICOLON COMMA
 %token LPAREN RPAREN LBRACE RBRACE
 
 %type <sval> tipo
-%type <sval> expresion
+%type <nodo> expresion
 
 %start programa
 
 %%
 
 programa:
-    lista_sentencias
+    lista_sentencias {raiz = NULL;}
 ;
 
 lista_sentencias:
@@ -57,7 +61,7 @@ sentencia:
 
 declaracion_variable:
     tipo ID ASSIGN expresion SEMICOLON
-        { printf("Declaración de variable con asignación: %s = %s\n", $2, $4); }
+        { printf("Declaración de variable con asignación: %s\n", $2); imprimirAST($4, 1); }
     | tipo ID SEMICOLON
         { printf("Declaración de variable sin asignación: %s\n", $2); }
 ;
@@ -70,53 +74,53 @@ tipo:
 
 asignacion:
     ID ASSIGN expresion SEMICOLON
-        { printf("Asignación: %s = %s\n", $1, $3); }
+        { printf("Asignación: %s = ...\n", $1); imprimirAST($3, 1); }
 ;
 
 expresion:
     expresion ADICION expresion
-        { $$ = "suma"; }
+        { $$ = crearNodoOperacion('+', $1, $3); }
     | expresion RESTACION expresion
-        { $$ = "resta"; }
+        { $$ = crearNodoOperacion('-', $1, $3); }
     | expresion MULTIPLICATEICHON expresion
-        { $$ = "multiplicación"; }
+        { $$ = crearNodoOperacion('*', $1, $3); }
     | expresion DIVISEISHON expresion
-        { $$ = "división"; }
+        { $$ = crearNodoOperacion('/', $1, $3); }
     | expresion IGUALEICHON expresion
         { $$ = "igualdad"; }
     | expresion DIFERENTEICHON expresion
         { $$ = "diferencia"; }
-    | expresion MENOR A expresion
+    | expresion MENOR_A expresion
         { $$ = "menor que"; }
-    | expresion MENOR O IGUAL A expresion
+    | expresion MENOR_O_IGUAL_A expresion
         { $$ = "menor o igual"; }
-    | expresion MAYOR A expresion
+    | expresion MAYOR_A expresion
         { $$ = "mayor que"; }
-    | expresion MAYOR O IGUAL A expresion
+    | expresion MAYOR_O_IGUAL_A expresion
         { $$ = "mayor o igual"; }
     | LPAREN expresion RPAREN
         { $$ = $2; }
-    | NUM     { $$ = "entero"; }
-    | DECIMAL { $$ = "decimal"; }
-    | CADENA  { $$ = "cadena"; }
-    | ID      { $$ = $1; }
+    | NUM     { $$ = crearNodoNumero($1); }
+    | DECIMAL { $$ = crearNodoDecimal($1); }
+    | CADENA  { $$ = crearNodoCadena($1); }
+    | ID      { $$ = crearNodoIdentificador($1); }
 ;
 
 seleccion:
     IF LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE
-        { printf("Estructura IF\n"); }
+        { printf("Estructura IF\n"); imprimirAST($3, 1); }
     | IF LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE ELSE LBRACE lista_sentencias RBRACE
-        { printf("Estructura IF-ELSE\n"); }
+        { printf("Estructura IF-ELSE\n"); imprimirAST($3, 1); }
 ;
 
 repeticion:
     WHILE LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE
-        { printf("Estructura WHILE\n"); }
+        { printf("Estructura WHILE\n"); imprimirAST($3, 1); }
 ;
 
 entrada_salida:
     PRINT LPAREN expresion RPAREN SEMICOLON
-        { printf("Imprimir\n"); }
+        { printf("Imprimir:\n"); imprimirAST($3, 1); }
     | READ LPAREN ID RPAREN SEMICOLON
         { printf("Leer variable: %s\n", $3); }
 ;
@@ -131,5 +135,6 @@ void yyerror(const char *s) {
 int main() {
     printf("Iniciando el compilador...\n");
     return yyparse(); // Inicia el análisis de la gramática.
+    return 0;
 }
 
