@@ -2,7 +2,7 @@
 #include <stdio.h>   // Permite usar prints 
 #include <stdlib.h>  // Funciones para asignar memoria
 #include <string.h>  // Funciones para manejar cadenas
-#include "nodoAst.h" // Cabecera de tu AST
+#include "nodoAst.h" // Cabecera de AST
 
 void yyerror(const char *s);
 int  yylex(void);
@@ -58,20 +58,23 @@ ASTNode *raiz = NULL;
 %%
 
 programa:
-    lista_sentencias     { raiz = $1; }
+    /*Se utiliza esta regla para poder utilizar agregarHermano*/
+    lista_sentencias     { raiz = $1; $$ = $1; }
 ;
 
 lista_sentencias:
     lista_sentencias sentencia
+    { $$ = agregarHermano($1,$2);}
   | sentencia
+    { $$ = $1;}
 ;
 
 sentencia:
-    declaracion_variable
-  | asignacion
-  | seleccion
-  | repeticion
-  | entrada_salida
+    declaracion_variable { $$ = $1; }
+  | asignacion { $$ = $1; }
+  | seleccion { $$ = $1; }
+  | repeticion { $$ = $1; }
+  | entrada_salida { $$ = $1; }
 ;
 
 declaracion_variable:
@@ -123,14 +126,14 @@ seleccion:
 
 repeticion:
     WHILE LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE
-      { printf("Estructura WHILE\n"); imprimirAST($3,1); }
+      { $$ = crearNodoWhile($3, $6); }
 ;
 
 entrada_salida:
     PRINT LPAREN expresion RPAREN SEMICOLON
-      { printf("Imprimir:\n"); imprimirAST($3,1); }
+      { $$ = crearNodoPrint($3); }
   | READ LPAREN ID RPAREN SEMICOLON
-      { printf("Leer variable: %s\n", $3); }
+      { $$ = crearNodoRead($3); }
 ;
 
 %%
@@ -141,5 +144,7 @@ void yyerror(const char *s) {
 
 int main() {
     printf("Iniciando el compilador...\n");
-    return yyparse();
+    yyparse();
+    imprimirAST(raiz,0);
+    return 0;
 }

@@ -906,7 +906,7 @@ case 27:
 YY_RULE_SETUP
 #line 48 "escaner.l"
 {
-                            /* Literal de cadena: eliminar comillas */
+                           /* Literal de cadena: eliminar comillas */
                             int len = yyleng;
                             char *str = malloc(len-1);
                             if (!str) exit(1);
