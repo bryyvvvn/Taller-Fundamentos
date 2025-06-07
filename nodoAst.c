@@ -145,34 +145,23 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 printf("Decl-Asig: tipo=%s id=%s\n",
                        nodo->dato.declAsig.varType,
                        nodo->dato.declAsig.id);
-                imprimirAST(nodo->dato.declAsig.initExpr, nivel+1);
                 break;
             case T_ASIGNACION:
                 printf("Asign: id=%s\n",
                        nodo->dato.asign.id);
-                imprimirAST(nodo->dato.asign.expr, nivel+1);
                 break;
             case T_IF:
                 printf("If:\n");
-                imprimirAST(nodo->dato.ifNode.cond, nivel+1);
-                imprimirAST(nodo->dato.ifNode.thenBranch, nivel+1);
-                if (nodo->dato.ifNode.elseBranch) {
-                    for (int i=0;i<nivel;i++) printf("  ");
-                    printf("Else:\n");
-                    imprimirAST(nodo->dato.ifNode.elseBranch, nivel+1);
-                }
                 break;
             case T_WHILE:
                 printf("While:\n");
-                imprimirAST(nodo->dato.whileNode.cond, nivel+1);
-                imprimirAST(nodo->dato.whileNode.body, nivel+1);
                 break;
             case T_PRINT:
                 printf("Print:\n");
-                imprimirAST(nodo->dato.printNode.expr, nivel+1);
                 break;
             case T_READ:
-                printf("Read id=%s\n", nodo->dato.readNode.id);
+                printf("Read id=%s\n",
+                       nodo->dato.readNode.id);
                 break;
             case T_NUMERO:
                 printf("Numero: %d\n", nodo->dato.valorEntero);
@@ -188,10 +177,14 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 break;
             case T_OPERACION:
                 printf("Op: %s\n", nodo->dato.oper.operador);
-                imprimirAST(nodo->dato.oper.left, nivel+1);
-                imprimirAST(nodo->dato.oper.right, nivel+1);
                 break;
         }
+
+        // aquí sólo un único llamado para recorrer todos los hijos
+        if (nodo->firstChild)
+            imprimirAST(nodo->firstChild, nivel+1);
+
+        // y luego avanzamos al hermano
         nodo = nodo->nextSibling;
     }
 }
