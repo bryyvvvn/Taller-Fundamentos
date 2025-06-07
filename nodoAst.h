@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*Tipos de nodos del árbol AST*/
 typedef enum {
     T_DECLARACION,            /* tipo + id                              */
     T_DECLARACION_ASIGNACION, /* tipo + id + expr                      */
@@ -19,6 +20,7 @@ typedef enum {
     T_OPERACION               /* operador binario +,==,!=,...          */
 } TipoNodo;
 
+/*Estructura del nodo AST*/
 typedef struct ASTNode {
     TipoNodo tipo;               /* qué tipo de nodo es */
     struct ASTNode *firstChild;  /* primer hijo (subárbol) */
@@ -83,6 +85,7 @@ typedef struct ASTNode {
     } dato;
 } ASTNode;
 
+/*Funciones para construir el AST*/
 ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano);
 
 /* Creadores de nodos */

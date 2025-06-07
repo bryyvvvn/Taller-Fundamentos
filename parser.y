@@ -4,17 +4,17 @@
 #include <string.h>  // Funciones para manejar cadenas
 #include "nodoAst.h" // Cabecera de AST
 
-void yyerror(const char *s);
-int  yylex(void);
+void yyerror(const char *s); //Función de error 
+int  yylex(void); // Para el escaner
 
-ASTNode *raiz = NULL;
+ASTNode *raiz = NULL; //Raiz del AST
 %}
 
 %union {
     int    ival;   /* literales enteros */
     float  fval;   /* literales float */
     char  *sval;   /* identificadores y cadenas */
-    ASTNode *nodo; /* para construir el AST */
+    ASTNode *nodo; /* nodos para construir el AST */
 }
 
 /* Tokens para literales y nombres */
@@ -57,11 +57,13 @@ ASTNode *raiz = NULL;
 
 %%
 
+/* Regla inicial del programa*/
 programa:
     /*Se utiliza esta regla para poder utilizar agregarHermano*/
     lista_sentencias     { raiz = $1; $$ = $1; }
 ;
 
+/*Se ocupa agregarHermano para concatenar los nodos en el árbol*/
 lista_sentencias:
     lista_sentencias sentencia
     { $$ = agregarHermano($1,$2);}
@@ -69,6 +71,7 @@ lista_sentencias:
     { $$ = $1;}
 ;
 
+/*Las sentencias podrían ser*/
 sentencia:
     declaracion_variable { $$ = $1; }
   | asignacion { $$ = $1; }
@@ -77,6 +80,7 @@ sentencia:
   | entrada_salida { $$ = $1; }
 ;
 
+/*Se declaran las variables*/
 declaracion_variable:
     tipo ID ASSIGN expresion SEMICOLON
       {/* Se construye nodo de declaración y asignación */
@@ -86,18 +90,21 @@ declaracion_variable:
       $$ = crearNodoDeclaracion($1, $2);}
 ;
 
+/*Tipos de variables*/
 tipo:
     INT    { $$ = $1; }
   | FLOAT  { $$ = $1; }
   | STRING { $$ = $1; }
 ;
 
+/*Asignación*/
 asignacion:
     ID ASSIGN expresion SEMICOLON
       {/*Nodo de asignación*/
         $$ = crearNodoAsignacion($1, $3);}
 ;
 
+/*Todas las expresiones que utiliza el lenguaje*/
 expresion:
     expresion ADICION        expresion { $$ = crearNodoOperacion("+",  $1, $3); }
   | expresion RESTACION      expresion { $$ = crearNodoOperacion("-",  $1, $3); }
@@ -116,6 +123,7 @@ expresion:
   | ID                                  { $$ = crearNodoIdentificador($1); }
 ;
 
+/*Funciones if y else*/
 seleccion:
     IF LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE
       { $$ = crearNodoIf($3, $6, NULL); }
@@ -124,11 +132,13 @@ seleccion:
       { $$ = crearNodoIf($3, $6, $10); }
 ;
 
+/*Función para el ciclo while*/
 repeticion:
     WHILE LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE
       { $$ = crearNodoWhile($3, $6); }
 ;
 
+/*Para el print*/
 entrada_salida:
     PRINT LPAREN expresion RPAREN SEMICOLON
       { $$ = crearNodoPrint($3); }
