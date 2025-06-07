@@ -6,6 +6,7 @@
 #include <string.h>
 %}
 
+/* Definición de los patrones*/
 DIGIT        [0-9]
 ID           [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE   [ \t\n]+
@@ -14,16 +15,19 @@ WHITESPACE   [ \t\n]+
 
 {WHITESPACE}             /* Ignorar espacios, tabs y newlines */
 
+{WHITESPACE}  /*Palabras clave*/
 "int"                    { yylval.sval = strdup(yytext); return INT; }
 "float"                  { yylval.sval = strdup(yytext); return FLOAT; }
 "string"                 { yylval.sval = strdup(yytext); return STRING; }
 
+{WHITESPACE} /*Palabras de control*/
 "if"                     { return IF; }
 "else"                   { return ELSE; }
 "while"                  { return WHILE; }
 "print"                  { return PRINT; }
 "read"                   { return READ; }
 
+{WHITESPACE} /*Operadores del lenguaje*/
 "=="                     { return IGUALEICHON; }
 "!="                     { return DIFERENTEICHON; }
 "<="                     { return MENOR_O_IGUAL_A; }
@@ -31,11 +35,13 @@ WHITESPACE   [ \t\n]+
 "<"                      { return MENOR_A; }
 ">"                      { return MAYOR_A; }
 
+{WHITESPACE} /*Operadores arítmeticos*/
 "+"                      { return ADICION; }
 "-"                      { return RESTACION; }
 "*"                      { return MULTIPLICATEICHON; }
 "/"                      { return DIVISEISHON; }
 
+{WHITESPACE} /*Asignación y puntuación*/
 "="                      { return ASSIGN; }
 
 ";"                      { return SEMICOLON; }
@@ -56,11 +62,14 @@ WHITESPACE   [ \t\n]+
                             return CADENA;
                          }
 
+{WHITESPACE}  /*Numerales*/
 {DIGIT}"."{DIGIT}+        { yylval.fval = atof(yytext);   return DECIMAL; }
 {DIGIT}+                  { yylval.ival = atoi(yytext);   return NUM;     }
 
+{WHITESPACE} /*Identificadores*/
 {ID}                      { yylval.sval = strdup(yytext); return ID;      }
 
+{WHITESPACE} /*Para reportar errores de léxico*/
 .                         { return yytext[0]; }  /* cualquier otro carácter */
 
 %%

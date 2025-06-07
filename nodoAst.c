@@ -3,6 +3,7 @@
 #include <string.h>
 #include "nodoAst.h"
 
+/*Une dos nodos hermanos en la lista*/
 ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano) {
     if (!primero) return hermano;
     ASTNode *p = primero;
@@ -11,6 +12,8 @@ ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano) {
     return primero;
 }
 
+/*Para la creación de los nodos del AST*/
+/*Declaración pero sin iniciar*/
 ASTNode *crearNodoDeclaracion(const char *varType, const char *id) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_DECLARACION;
@@ -20,6 +23,7 @@ ASTNode *crearNodoDeclaracion(const char *varType, const char *id) {
     return n;
 }
 
+/*Declaración con inicialización*/
 ASTNode *crearNodoDeclaracionAsignacion(const char *varType,
                                         const char *id,
                                         ASTNode    *initExpr) {
@@ -33,6 +37,7 @@ ASTNode *crearNodoDeclaracionAsignacion(const char *varType,
     return n;
 }
 
+/*Nodo asignación*/
 ASTNode *crearNodoAsignacion(const char *id, ASTNode *expr) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_ASIGNACION;
@@ -43,6 +48,7 @@ ASTNode *crearNodoAsignacion(const char *id, ASTNode *expr) {
     return n;
 }
 
+/*Para nodo If y else*/
 ASTNode *crearNodoIf(ASTNode *cond, ASTNode *thenBranch, ASTNode *elseBranch) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_IF;
@@ -56,6 +62,7 @@ ASTNode *crearNodoIf(ASTNode *cond, ASTNode *thenBranch, ASTNode *elseBranch) {
     return n;
 }
 
+/*Para nodo While*/
 ASTNode *crearNodoWhile(ASTNode *cond, ASTNode *body) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_WHILE;
@@ -67,6 +74,7 @@ ASTNode *crearNodoWhile(ASTNode *cond, ASTNode *body) {
     return n;
 }
 
+/*Para nodo Print*/
 ASTNode *crearNodoPrint(ASTNode *expr) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_PRINT;
@@ -76,6 +84,7 @@ ASTNode *crearNodoPrint(ASTNode *expr) {
     return n;
 }
 
+/*Para nodo Read*/
 ASTNode *crearNodoRead(const char *id) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_READ;
@@ -85,6 +94,7 @@ ASTNode *crearNodoRead(const char *id) {
     return n;
 }
 
+/*Literales y variables*/
 ASTNode *crearNodoNumero(int valor) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_NUMERO;
@@ -117,6 +127,7 @@ ASTNode *crearNodoIdentificador(const char *nombre) {
     return n;
 }
 
+/*Operaciones aritmeticas*/
 ASTNode *crearNodoOperacion(const char *operador,
                             ASTNode   *left,
                             ASTNode   *right) {
@@ -132,9 +143,11 @@ ASTNode *crearNodoOperacion(const char *operador,
     return n;
 }
 
+/*Para imprimir recursivamente el árbol AST*/
 void imprimirAST(ASTNode *nodo, int nivel) {
     while (nodo) {
-        for (int i = 0; i < nivel; i++) printf("  ");
+        for (int i = 0; i < nivel; i++) printf("  "); 
+        //Imprimir información del nodo actual
         switch (nodo->tipo) {
             case T_DECLARACION:
                 printf("Decl: tipo=%s id=%s\n",
