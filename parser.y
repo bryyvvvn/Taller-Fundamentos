@@ -3,6 +3,11 @@
 #include <stdlib.h>  // Funciones para asignar memoria
 #include <string.h>  // Funciones para manejar cadenas
 #include "nodoAst.h" // Cabecera de AST
+#include "tablaSimbolos.h"
+
+int errores = 0; //Para contar los errores semanticos
+void install(char *name, VarType type); //Instala en caso de que no exista
+void context_check(char *name); //Checkeo de la declaración
 
 void yyerror(const char *s); //Función de error 
 int  yylex(void); // Para el escaner
@@ -15,6 +20,7 @@ ASTNode *raiz = NULL; //Raiz del AST
     float  fval;   /* literales float */
     char  *sval;   /* identificadores y cadenas */
     ASTNode *nodo; /* nodos para construir el AST */
+    int tipoVar; /*para la variable tipo*/
 }
 
 /* Tokens para literales y nombres */
@@ -23,9 +29,9 @@ ASTNode *raiz = NULL; //Raiz del AST
 %token <sval> CADENA
 %token <sval> ID
 
-%token <sval> INT       /* palabra clave 'int' */
-%token <sval> FLOAT     /* palabra clave 'float' */
-%token <sval> STRING    /* palabra clave 'string' */
+%token <tipoVar> INT       /* palabra clave 'int' */
+%token <tipoVar> FLOAT     /* palabra clave 'float' */
+%token <tipoVar> STRING    /* palabra clave 'string' */
 
 
 %token IF ELSE WHILE PRINT READ
@@ -44,7 +50,7 @@ ASTNode *raiz = NULL; //Raiz del AST
 %nonassoc IGUALEICHON DIFERENTEICHON
 %nonassoc MENOR_A MENOR_O_IGUAL_A MAYOR_A MAYOR_O_IGUAL_A
 
-%type <sval>   tipo
+%type <tipoVar>   tipo
 %type <nodo>   expresion
 
 /* declaración de todos los no-terminales que usan $$ = <ASTNode*> */
@@ -60,7 +66,12 @@ ASTNode *raiz = NULL; //Raiz del AST
 /* Regla inicial del programa*/
 programa:
     /*Se utiliza esta regla para poder utilizar agregarHermano*/
-    lista_sentencias     { raiz = $1; $$ = $1; }
+    lista_sentencias     { raiz = $1;
+    if(errores > 0){
+      fprintf(stderr, "Se encontraron %d errores semánticos\n", errores);
+      exit(1);
+    } 
+    $$ = $1; }
 ;
 
 /*Se ocupa agregarHermano para concatenar los nodos en el árbol*/
@@ -83,24 +94,27 @@ sentencia:
 /*Se declaran las variables*/
 declaracion_variable:
     tipo ID ASSIGN expresion SEMICOLON
-      {/* Se construye nodo de declaración y asignación */
+      {install($2,$1); //Inserta la tabla en caso de que no exista
+        /* Se construye nodo de declaración y asignación */
       $$ = crearNodoDeclaracionAsignacion($1, $2, $4);}
   | tipo ID SEMICOLON
-      {/* Nodo declaración sin inicializar */
+      {install($2,$1); //Inserta sin inicializar
+        /* Nodo declaración sin inicializar */
       $$ = crearNodoDeclaracion($1, $2);}
 ;
 
 /*Tipos de variables*/
 tipo:
-    INT    { $$ = $1; }
-  | FLOAT  { $$ = $1; }
-  | STRING { $$ = $1; }
+    INT    { $$ = TYPE_INT; }
+  | FLOAT  { $$ = TYPE_FLOAT; }
+  | STRING { $$ = TYPE_STRING; }
 ;
 
 /*Asignación*/
 asignacion:
     ID ASSIGN expresion SEMICOLON
-      {/*Nodo de asignación*/
+      {context_check($1); //Error si no estaba declarado
+        /*Nodo de asignación*/
         $$ = crearNodoAsignacion($1, $3);}
 ;
 
@@ -120,7 +134,8 @@ expresion:
   | NUM                                 { $$ = crearNodoNumero($1); }
   | DECIMAL                             { $$ = crearNodoDecimal($1); }
   | CADENA                              { $$ = crearNodoCadena($1); }
-  | ID                                  { $$ = crearNodoIdentificador($1); }
+  | ID                                  {context_check($1); // Verifica si existe
+                                          $$ = crearNodoIdentificador($1); }
 ;
 
 /*Funciones if y else*/
@@ -143,7 +158,8 @@ entrada_salida:
     PRINT LPAREN expresion RPAREN SEMICOLON
       { $$ = crearNodoPrint($3); }
   | READ LPAREN ID RPAREN SEMICOLON
-      { $$ = crearNodoRead($3); }
+      {context_check($3); // Para que no se lea si no está declarado
+         $$ = crearNodoRead($3); }
 ;
 
 %%
