@@ -10,12 +10,12 @@ int  yylex(void); // Para el escaner
 ASTNode *raiz = NULL; //Raiz del AST
 %}
 
-%union {
+/*%union {
     int    ival;   /* literales enteros */
     float  fval;   /* literales float */
     char  *sval;   /* identificadores y cadenas */
     ASTNode *nodo; /* nodos para construir el AST */
-}
+}*/
 
 /* Tokens para literales y nombres */
 %token <ival>  NUM
@@ -81,7 +81,7 @@ sentencia:
 ;
 
 /*Se declaran las variables*/
-/*declaracion_variable:
+declaracion_variable:
     tipo ID ASSIGN expresion SEMICOLON
       {/* Se construye nodo de declaración y asignación */
       $$ = crearNodoDeclaracionAsignacion($1, $2, $4);}
