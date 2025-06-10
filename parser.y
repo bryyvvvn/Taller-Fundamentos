@@ -81,7 +81,7 @@ sentencia:
 ;
 
 /*Se declaran las variables*/
-declaracion_variable:
+/*declaracion_variable:
     tipo ID ASSIGN expresion SEMICOLON
       {/* Se construye nodo de declaración y asignación */
       $$ = crearNodoDeclaracionAsignacion($1, $2, $4);}
