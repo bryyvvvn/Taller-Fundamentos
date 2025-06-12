@@ -4,6 +4,7 @@
 #include <string.h>  // Funciones para manejar cadenas
 #include "nodoAst.h" // Cabecera de AST
 #include "tablaSimbolos.h"
+#include "generadorDeCodigo.h"
 
 void install(char *name, VarType type); //Instala en caso de que no exista
 void context_check(char *name); //Checkeo de la declaración
@@ -70,6 +71,7 @@ programa:
       fprintf(stderr, "Se encontraron %d errores semánticos\n", errores);
       exit(1);
     } 
+    generarCodigo(raiz); /*Llamado para la función de generar el código C*/
     $$ = $1; }
 ;
 

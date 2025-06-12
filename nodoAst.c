@@ -106,9 +106,9 @@ ASTNode *crearNodoNumero(int valor) {
 
 ASTNode *crearNodoDecimal(float valor) {
     ASTNode *n = malloc(sizeof(ASTNode));
-    n->tipo = T_DECIMAL;
+    n->tipo = T_DECIMAL;  // Asegúrate de que el tipo sea T_DECIMAL
     n->firstChild = n->nextSibling = NULL;
-    n->dato.valorDecimal = valor;
+    n->dato.valorDecimal = valor;  // Asigna correctamente el valor flotante
     return n;
 }
 
