@@ -5,7 +5,6 @@
 #include "nodoAst.h" // Cabecera de AST
 #include "tablaSimbolos.h"
 
-int errores = 0; //Para contar los errores semanticos
 void install(char *name, VarType type); //Instala en caso de que no exista
 void context_check(char *name); //Checkeo de la declaración
 
@@ -20,7 +19,7 @@ ASTNode *raiz = NULL; //Raiz del AST
     float  fval;   /* literales float */
     char  *sval;   /* identificadores y cadenas */
     ASTNode *nodo; /* nodos para construir el AST */
-    int tipoVar; /*para la variable tipo*/
+    VarType tipoVar; /*para la variable tipo*/
 }
 
 /* Tokens para literales y nombres */
@@ -107,7 +106,7 @@ declaracion_variable:
 tipo:
     INT    { $$ = TYPE_INT; }
   | FLOAT  { $$ = TYPE_FLOAT; }
-  | STRING { $$ = TYPE_STRING; }
+  | STRING { $$ =  TYPE_STRING; }
 ;
 
 /*Asignación*/
