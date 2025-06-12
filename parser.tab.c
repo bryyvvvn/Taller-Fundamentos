@@ -74,6 +74,7 @@
 #include <string.h>  // Funciones para manejar cadenas
 #include "nodoAst.h" // Cabecera de AST
 #include "tablaSimbolos.h"
+#include "generadorDeCodigo.h"
 
 void install(char *name, VarType type); //Instala en caso de que no exista
 void context_check(char *name); //Checkeo de la declaración
@@ -83,7 +84,7 @@ int  yylex(void); // Para el escaner
 
 ASTNode *raiz = NULL; //Raiz del AST
 
-#line 87 "parser.tab.c"
+#line 88 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -542,10 +543,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    68,    68,    78,    80,    86,    87,    88,    89,    90,
-      95,    99,   107,   108,   109,   114,   122,   123,   124,   125,
-     126,   127,   128,   129,   130,   131,   132,   133,   134,   135,
-     136,   142,   144,   151,   157,   159
+       0,    69,    69,    80,    82,    88,    89,    90,    91,    92,
+      97,   101,   109,   110,   111,   116,   124,   125,   126,   127,
+     128,   129,   130,   131,   132,   133,   134,   135,   136,   137,
+     138,   144,   146,   153,   159,   161
 };
 #endif
 
@@ -1173,224 +1174,225 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: lista_sentencias  */
-#line 68 "parser.y"
+#line 69 "parser.y"
                          { raiz = (yyvsp[0].nodo);
     if(errores > 0){
       fprintf(stderr, "Se encontraron %d errores semánticos\n", errores);
       exit(1);
     } 
+    generarCodigo(raiz); /*Llamado para la función de generar el código C*/
     (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1184 "parser.tab.c"
+#line 1186 "parser.tab.c"
     break;
 
   case 3: /* lista_sentencias: lista_sentencias sentencia  */
-#line 79 "parser.y"
+#line 81 "parser.y"
     { (yyval.nodo) = agregarHermano((yyvsp[-1].nodo),(yyvsp[0].nodo));}
-#line 1190 "parser.tab.c"
+#line 1192 "parser.tab.c"
     break;
 
   case 4: /* lista_sentencias: sentencia  */
-#line 81 "parser.y"
+#line 83 "parser.y"
     { (yyval.nodo) = (yyvsp[0].nodo);}
-#line 1196 "parser.tab.c"
+#line 1198 "parser.tab.c"
     break;
 
   case 5: /* sentencia: declaracion_variable  */
-#line 86 "parser.y"
+#line 88 "parser.y"
                          { (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1202 "parser.tab.c"
+#line 1204 "parser.tab.c"
     break;
 
   case 6: /* sentencia: asignacion  */
-#line 87 "parser.y"
+#line 89 "parser.y"
                { (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1208 "parser.tab.c"
+#line 1210 "parser.tab.c"
     break;
 
   case 7: /* sentencia: seleccion  */
-#line 88 "parser.y"
+#line 90 "parser.y"
               { (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1214 "parser.tab.c"
+#line 1216 "parser.tab.c"
     break;
 
   case 8: /* sentencia: repeticion  */
-#line 89 "parser.y"
+#line 91 "parser.y"
                { (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1220 "parser.tab.c"
+#line 1222 "parser.tab.c"
     break;
 
   case 9: /* sentencia: entrada_salida  */
-#line 90 "parser.y"
+#line 92 "parser.y"
                    { (yyval.nodo) = (yyvsp[0].nodo); }
-#line 1226 "parser.tab.c"
+#line 1228 "parser.tab.c"
     break;
 
   case 10: /* declaracion_variable: tipo ID ASSIGN expresion SEMICOLON  */
-#line 96 "parser.y"
+#line 98 "parser.y"
       {install((yyvsp[-3].sval),(yyvsp[-4].tipoVar)); //Inserta la tabla en caso de que no exista
         /* Se construye nodo de declaración y asignación */
       (yyval.nodo) = crearNodoDeclaracionAsignacion((yyvsp[-4].tipoVar), (yyvsp[-3].sval), (yyvsp[-1].nodo));}
-#line 1234 "parser.tab.c"
+#line 1236 "parser.tab.c"
     break;
 
   case 11: /* declaracion_variable: tipo ID SEMICOLON  */
-#line 100 "parser.y"
+#line 102 "parser.y"
       {install((yyvsp[-1].sval),(yyvsp[-2].tipoVar)); //Inserta sin inicializar
         /* Nodo declaración sin inicializar */
       (yyval.nodo) = crearNodoDeclaracion((yyvsp[-2].tipoVar), (yyvsp[-1].sval));}
-#line 1242 "parser.tab.c"
+#line 1244 "parser.tab.c"
     break;
 
   case 12: /* tipo: INT  */
-#line 107 "parser.y"
+#line 109 "parser.y"
            { (yyval.tipoVar) = TYPE_INT; }
-#line 1248 "parser.tab.c"
+#line 1250 "parser.tab.c"
     break;
 
   case 13: /* tipo: FLOAT  */
-#line 108 "parser.y"
+#line 110 "parser.y"
            { (yyval.tipoVar) = TYPE_FLOAT; }
-#line 1254 "parser.tab.c"
+#line 1256 "parser.tab.c"
     break;
 
   case 14: /* tipo: STRING  */
-#line 109 "parser.y"
+#line 111 "parser.y"
            { (yyval.tipoVar) =  TYPE_STRING; }
-#line 1260 "parser.tab.c"
+#line 1262 "parser.tab.c"
     break;
 
   case 15: /* asignacion: ID ASSIGN expresion SEMICOLON  */
-#line 115 "parser.y"
+#line 117 "parser.y"
       {context_check((yyvsp[-3].sval)); //Error si no estaba declarado
         /*Nodo de asignación*/
         (yyval.nodo) = crearNodoAsignacion((yyvsp[-3].sval), (yyvsp[-1].nodo));}
-#line 1268 "parser.tab.c"
+#line 1270 "parser.tab.c"
     break;
 
   case 16: /* expresion: expresion ADICION expresion  */
-#line 122 "parser.y"
+#line 124 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("+",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1274 "parser.tab.c"
+#line 1276 "parser.tab.c"
     break;
 
   case 17: /* expresion: expresion RESTACION expresion  */
-#line 123 "parser.y"
+#line 125 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("-",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1280 "parser.tab.c"
+#line 1282 "parser.tab.c"
     break;
 
   case 18: /* expresion: expresion MULTIPLICATEICHON expresion  */
-#line 124 "parser.y"
+#line 126 "parser.y"
                                           { (yyval.nodo) = crearNodoOperacion("*",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1286 "parser.tab.c"
+#line 1288 "parser.tab.c"
     break;
 
   case 19: /* expresion: expresion DIVISEISHON expresion  */
-#line 125 "parser.y"
+#line 127 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("/",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1292 "parser.tab.c"
+#line 1294 "parser.tab.c"
     break;
 
   case 20: /* expresion: expresion IGUALEICHON expresion  */
-#line 126 "parser.y"
+#line 128 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("==", (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1298 "parser.tab.c"
+#line 1300 "parser.tab.c"
     break;
 
   case 21: /* expresion: expresion DIFERENTEICHON expresion  */
-#line 127 "parser.y"
+#line 129 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("!=", (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1304 "parser.tab.c"
+#line 1306 "parser.tab.c"
     break;
 
   case 22: /* expresion: expresion MENOR_A expresion  */
-#line 128 "parser.y"
+#line 130 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion("<",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1310 "parser.tab.c"
+#line 1312 "parser.tab.c"
     break;
 
   case 23: /* expresion: expresion MENOR_O_IGUAL_A expresion  */
-#line 129 "parser.y"
+#line 131 "parser.y"
                                         { (yyval.nodo) = crearNodoOperacion("<=", (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1316 "parser.tab.c"
+#line 1318 "parser.tab.c"
     break;
 
   case 24: /* expresion: expresion MAYOR_A expresion  */
-#line 130 "parser.y"
+#line 132 "parser.y"
                                        { (yyval.nodo) = crearNodoOperacion(">",  (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1322 "parser.tab.c"
+#line 1324 "parser.tab.c"
     break;
 
   case 25: /* expresion: expresion MAYOR_O_IGUAL_A expresion  */
-#line 131 "parser.y"
+#line 133 "parser.y"
                                         { (yyval.nodo) = crearNodoOperacion(">=", (yyvsp[-2].nodo), (yyvsp[0].nodo)); }
-#line 1328 "parser.tab.c"
+#line 1330 "parser.tab.c"
     break;
 
   case 26: /* expresion: LPAREN expresion RPAREN  */
-#line 132 "parser.y"
+#line 134 "parser.y"
                                         { (yyval.nodo) = (yyvsp[-1].nodo); }
-#line 1334 "parser.tab.c"
+#line 1336 "parser.tab.c"
     break;
 
   case 27: /* expresion: NUM  */
-#line 133 "parser.y"
+#line 135 "parser.y"
                                         { (yyval.nodo) = crearNodoNumero((yyvsp[0].ival)); }
-#line 1340 "parser.tab.c"
+#line 1342 "parser.tab.c"
     break;
 
   case 28: /* expresion: DECIMAL  */
-#line 134 "parser.y"
+#line 136 "parser.y"
                                         { (yyval.nodo) = crearNodoDecimal((yyvsp[0].fval)); }
-#line 1346 "parser.tab.c"
+#line 1348 "parser.tab.c"
     break;
 
   case 29: /* expresion: CADENA  */
-#line 135 "parser.y"
+#line 137 "parser.y"
                                         { (yyval.nodo) = crearNodoCadena((yyvsp[0].sval)); }
-#line 1352 "parser.tab.c"
+#line 1354 "parser.tab.c"
     break;
 
   case 30: /* expresion: ID  */
-#line 136 "parser.y"
+#line 138 "parser.y"
                                         {context_check((yyvsp[0].sval)); // Verifica si existe
                                           (yyval.nodo) = crearNodoIdentificador((yyvsp[0].sval)); }
-#line 1359 "parser.tab.c"
+#line 1361 "parser.tab.c"
     break;
 
   case 31: /* seleccion: IF LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE  */
-#line 143 "parser.y"
+#line 145 "parser.y"
       { (yyval.nodo) = crearNodoIf((yyvsp[-4].nodo), (yyvsp[-1].nodo), NULL); }
-#line 1365 "parser.tab.c"
+#line 1367 "parser.tab.c"
     break;
 
   case 32: /* seleccion: IF LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE ELSE LBRACE lista_sentencias RBRACE  */
-#line 146 "parser.y"
+#line 148 "parser.y"
       { (yyval.nodo) = crearNodoIf((yyvsp[-8].nodo), (yyvsp[-5].nodo), (yyvsp[-1].nodo)); }
-#line 1371 "parser.tab.c"
+#line 1373 "parser.tab.c"
     break;
 
   case 33: /* repeticion: WHILE LPAREN expresion RPAREN LBRACE lista_sentencias RBRACE  */
-#line 152 "parser.y"
+#line 154 "parser.y"
       { (yyval.nodo) = crearNodoWhile((yyvsp[-4].nodo), (yyvsp[-1].nodo)); }
-#line 1377 "parser.tab.c"
+#line 1379 "parser.tab.c"
     break;
 
   case 34: /* entrada_salida: PRINT LPAREN expresion RPAREN SEMICOLON  */
-#line 158 "parser.y"
+#line 160 "parser.y"
       { (yyval.nodo) = crearNodoPrint((yyvsp[-2].nodo)); }
-#line 1383 "parser.tab.c"
+#line 1385 "parser.tab.c"
     break;
 
   case 35: /* entrada_salida: READ LPAREN ID RPAREN SEMICOLON  */
-#line 160 "parser.y"
+#line 162 "parser.y"
       {context_check((yyvsp[-2].sval)); // Para que no se lea si no está declarado
          (yyval.nodo) = crearNodoRead((yyvsp[-2].sval)); }
-#line 1390 "parser.tab.c"
+#line 1392 "parser.tab.c"
     break;
 
 
-#line 1394 "parser.tab.c"
+#line 1396 "parser.tab.c"
 
       default: break;
     }
@@ -1583,7 +1585,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 164 "parser.y"
+#line 166 "parser.y"
 
 
 void yyerror(const char *s) {
