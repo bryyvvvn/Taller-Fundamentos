@@ -493,7 +493,8 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 #line 495 "lex.yy.c"
-#line 496 "lex.yy.c"
+/* Definición de los patrones*/
+#line 497 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -710,10 +711,10 @@ YY_DECL
 		}
 
 	{
-#line 13 "escaner.l"
+#line 14 "escaner.l"
 
 
-#line 716 "lex.yy.c"
+#line 717 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -773,138 +774,143 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "escaner.l"
+#line 16 "escaner.l"
 /* Ignorar espacios, tabs y newlines */
 	YY_BREAK
+/*Palabras clave*/
 case 2:
 YY_RULE_SETUP
-#line 17 "escaner.l"
+#line 19 "escaner.l"
 { yylval.sval = strdup(yytext); return INT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "escaner.l"
+#line 20 "escaner.l"
 { yylval.sval = strdup(yytext); return FLOAT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "escaner.l"
+#line 21 "escaner.l"
 { yylval.sval = strdup(yytext); return STRING; }
 	YY_BREAK
+/*Palabras de control*/
 case 5:
 YY_RULE_SETUP
-#line 21 "escaner.l"
+#line 24 "escaner.l"
 { return IF; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 22 "escaner.l"
+#line 25 "escaner.l"
 { return ELSE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 23 "escaner.l"
+#line 26 "escaner.l"
 { return WHILE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "escaner.l"
+#line 27 "escaner.l"
 { return PRINT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 25 "escaner.l"
+#line 28 "escaner.l"
 { return READ; }
 	YY_BREAK
+/*Operadores del lenguaje*/
 case 10:
 YY_RULE_SETUP
-#line 27 "escaner.l"
+#line 31 "escaner.l"
 { return IGUALEICHON; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "escaner.l"
+#line 32 "escaner.l"
 { return DIFERENTEICHON; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 29 "escaner.l"
+#line 33 "escaner.l"
 { return MENOR_O_IGUAL_A; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 30 "escaner.l"
+#line 34 "escaner.l"
 { return MAYOR_O_IGUAL_A; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 31 "escaner.l"
+#line 35 "escaner.l"
 { return MENOR_A; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 32 "escaner.l"
+#line 36 "escaner.l"
 { return MAYOR_A; }
 	YY_BREAK
+/*Operadores arítmeticos*/
 case 16:
 YY_RULE_SETUP
-#line 34 "escaner.l"
+#line 39 "escaner.l"
 { return ADICION; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 35 "escaner.l"
+#line 40 "escaner.l"
 { return RESTACION; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 36 "escaner.l"
+#line 41 "escaner.l"
 { return MULTIPLICATEICHON; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 37 "escaner.l"
+#line 42 "escaner.l"
 { return DIVISEISHON; }
 	YY_BREAK
+/*Asignación y puntuación*/
 case 20:
 YY_RULE_SETUP
-#line 39 "escaner.l"
+#line 45 "escaner.l"
 { return ASSIGN; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 41 "escaner.l"
+#line 47 "escaner.l"
 { return SEMICOLON; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 42 "escaner.l"
+#line 48 "escaner.l"
 { return COMMA; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 43 "escaner.l"
+#line 49 "escaner.l"
 { return LPAREN; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 44 "escaner.l"
+#line 50 "escaner.l"
 { return RPAREN; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 45 "escaner.l"
+#line 51 "escaner.l"
 { return LBRACE; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 46 "escaner.l"
+#line 52 "escaner.l"
 { return RBRACE; }
 	YY_BREAK
 case 27:
 /* rule 27 can match eol */
 YY_RULE_SETUP
-#line 48 "escaner.l"
+#line 54 "escaner.l"
 {
                            /* Literal de cadena: eliminar comillas */
                             int len = yyleng;
@@ -916,32 +922,35 @@ YY_RULE_SETUP
                             return CADENA;
                          }
 	YY_BREAK
+/*Numerales*/
 case 28:
 YY_RULE_SETUP
-#line 59 "escaner.l"
+#line 66 "escaner.l"
 { yylval.fval = atof(yytext);   return DECIMAL; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 60 "escaner.l"
+#line 67 "escaner.l"
 { yylval.ival = atoi(yytext);   return NUM;     }
 	YY_BREAK
+/*Identificadores*/
 case 30:
 YY_RULE_SETUP
-#line 62 "escaner.l"
+#line 70 "escaner.l"
 { yylval.sval = strdup(yytext); return ID;      }
 	YY_BREAK
+/*Para reportar errores de léxico*/
 case 31:
 YY_RULE_SETUP
-#line 64 "escaner.l"
+#line 73 "escaner.l"
 { return yytext[0]; }  /* cualquier otro carácter */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 66 "escaner.l"
+#line 75 "escaner.l"
 ECHO;
 	YY_BREAK
-#line 944 "lex.yy.c"
+#line 953 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1946,7 +1955,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 66 "escaner.l"
+#line 75 "escaner.l"
 
 
 int yywrap(void) {

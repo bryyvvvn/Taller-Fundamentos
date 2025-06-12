@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "nodoAst.h"
+#include "tablaSimbolos.h"
 
 /*Une dos nodos hermanos en la lista*/
 ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano) {
@@ -14,24 +15,24 @@ ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano) {
 
 /*Para la creación de los nodos del AST*/
 /*Declaración pero sin iniciar*/
-ASTNode *crearNodoDeclaracion(const char *varType, const char *id) {
+ASTNode *crearNodoDeclaracion(VarType varType, const char *id) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_DECLARACION;
     n->firstChild = n->nextSibling = NULL;
-    n->dato.decl.varType = strdup(varType);
+    n->dato.decl.varType = varType;
     n->dato.decl.id      = strdup(id);
     return n;
 }
 
 /*Declaración con inicialización*/
-ASTNode *crearNodoDeclaracionAsignacion(const char *varType,
+ASTNode *crearNodoDeclaracionAsignacion(VarType varType,
                                         const char *id,
                                         ASTNode    *initExpr) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_DECLARACION_ASIGNACION;
     n->firstChild = initExpr;
     n->nextSibling = NULL;
-    n->dato.declAsig.varType  = strdup(varType);
+    n->dato.declAsig.varType  = varType;
     n->dato.declAsig.id       = strdup(id);
     n->dato.declAsig.initExpr = initExpr;
     return n;
@@ -150,12 +151,12 @@ void imprimirAST(ASTNode *nodo, int nivel) {
         //Imprimir información del nodo actual
         switch (nodo->tipo) {
             case T_DECLARACION:
-                printf("Decl: tipo=%s id=%s\n",
+                printf("Decl: tipo=%d id=%s\n",
                        nodo->dato.decl.varType,
                        nodo->dato.decl.id);
                 break;
             case T_DECLARACION_ASIGNACION:
-                printf("Decl-Asig: tipo=%s id=%s\n",
+                printf("Decl-Asig: tipo=%d id=%s\n",
                        nodo->dato.declAsig.varType,
                        nodo->dato.declAsig.id);
                 break;

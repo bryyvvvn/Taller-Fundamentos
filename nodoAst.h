@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "tablaSimbolos.h"
 
 /*Tipos de nodos del árbol AST*/
 typedef enum {
@@ -36,13 +37,13 @@ typedef struct ASTNode {
 
         /* declaración sin asignar */
         struct {
-            char *varType;
+            VarType varType;
             char *id;
         } decl;
 
         /* declaración con asignación */
         struct {
-            char      *varType;
+            VarType varType;
             char      *id;
             struct ASTNode *initExpr;
         } declAsig;
@@ -89,8 +90,8 @@ typedef struct ASTNode {
 ASTNode *agregarHermano(ASTNode *primero, ASTNode *hermano);
 
 /* Creadores de nodos */
-ASTNode *crearNodoDeclaracion   (const char *varType, const char *id);
-ASTNode *crearNodoDeclaracionAsignacion(const char *varType,
+ASTNode *crearNodoDeclaracion   (VarType VarType, const char *id);
+ASTNode *crearNodoDeclaracionAsignacion(VarType varType,
                                         const char *id,
                                         ASTNode    *initExpr);
 ASTNode *crearNodoAsignacion    (const char *id, ASTNode *expr);

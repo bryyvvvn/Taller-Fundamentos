@@ -91,14 +91,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "parser.y"
+#line 17 "parser.y"
 
     int    ival;   /* literales enteros */
     float  fval;   /* literales float */
     char  *sval;   /* identificadores y cadenas */
-    ASTNode *nodo; /* para construir el AST */
+    ASTNode *nodo; /* nodos para construir el AST */
+    VarType tipoVar; /*para la variable tipo*/
 
-#line 102 "parser.tab.h"
+#line 103 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
