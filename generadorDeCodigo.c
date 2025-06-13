@@ -8,7 +8,7 @@ FILE *salida = NULL;
 
 // Para inicializar el archivo de salida
 void inicializarSalida() {
-    salida = fopen("codigo_generado.c", "w");  // Abre el archivo para escribir
+    salida = fopen("code.c", "w");  // Abre el archivo para escribir
     if (salida == NULL) {
         fprintf(stderr, "Error al abrir el archivo de salida.\n");
         exit(1);  // Si no se puede abrir el archivo, el programa se detiene
@@ -170,7 +170,6 @@ void generarCodigo(ASTNode *nodo) {
             case T_READ:
                 generarCodigoRead(nodo);
                 break;
-            // Agregar más casos según los nodos de tu AST
         }
         nodo = nodo->nextSibling;  // Avanza al siguiente hermano en el AST
     }
