@@ -26,6 +26,8 @@ WHITESPACE   [ \t\n]+
 "while"                  { return WHILE; }
 "print"                  { return PRINT; }
 "read"                   { return READ; }
+"func"                   { return FUNC; }
+"return"                 { return RETORNO; }
 
  /*Operadores del lenguaje*/
 "=="                     { return IGUALEICHON; }

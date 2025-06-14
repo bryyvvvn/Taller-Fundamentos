@@ -13,7 +13,16 @@ typedef struct symrec{
     struct symrec *next; /*para pasar al siguiente en la lista*/
 } symrec;
 
-/*Cabeza de la lista*/
+/*Estructura para manejar alcances (scopes) en forma de pila*/
+typedef struct scope {
+    symrec *symbols;           /* Lista de símbolos de este scope */
+    struct scope *next;        /* Scope inmediatamente inferior */
+} Scope;
+
+/* Puntero al scope actual */
+extern Scope *scope_stack;
+
+/* Alias para la tabla actual de símbolos para mantener compatibilidad */
 extern symrec *sym_table;
 
 extern int errores;
@@ -27,4 +36,7 @@ symrec *getsym(const char *name);
 
 void install(char *name, VarType type);  // Inserta un símbolo
 void context_check(char *name);  // Revisa si el símbolo está declarado
+/* Manejo de scopes */
+void push_scope();   // Crea un nuevo alcance
+void pop_scope();    // Elimina el alcance actual
 

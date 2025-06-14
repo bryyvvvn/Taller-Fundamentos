@@ -18,7 +18,11 @@ typedef enum {
     T_DECIMAL,                /* literal float                         */
     T_CADENA,                 /* literal cadena                        */
     T_IDENTIFICADOR,          /* uso de variable                       */
-    T_OPERACION               /* operador binario +,==,!=,...          */
+    T_OPERACION,              /* operador binario +,==,!=,...          */
+    T_FUNCION,                /* declaración de función */
+    T_LLAMADA,                /* llamada a función */
+    T_PARAMETRO,              /* parametro de función */
+    T_RETURN                  /* sentencia return */
 } TipoNodo;
 
 /*Estructura del nodo AST*/
@@ -83,6 +87,29 @@ typedef struct ASTNode {
             struct ASTNode *left;
             struct ASTNode *right;
         } oper;
+
+        struct {
+            char *id;
+            struct ASTNode *params;
+            struct ASTNode *body;
+        } funcion;
+
+        struct {
+            char *id;
+            struct ASTNode *args;
+
+        } llamada;
+
+        struct {
+            VarType varType;
+            char *id;
+        }param;
+
+        struct {
+            struct ASTNode *expr;
+        }returnNode;
+        
+        
     } dato;
 } ASTNode;
 
@@ -109,6 +136,10 @@ ASTNode *crearNodoIdentificador (const char *nombre);
 ASTNode *crearNodoOperacion     (const char *operador,
                                  ASTNode   *left,
                                  ASTNode   *right);
+ASTNode *crearNodoFuncion       (const char *id, ASTNode *params, ASTNode *body);
+ASTNode *crearNodoLlamada       (const char *id, ASTNode *args);
+ASTNode *crearNodoParametro     (VarType varType, const char *id);
+ASTNode *crearNodoReturn        (ASTNode *expr);
 
 /* Imprime el AST completo (recursivo + siblings) */
 void imprimirAST(ASTNode *nodo, int nivel);

@@ -144,6 +144,55 @@ ASTNode *crearNodoOperacion(const char *operador,
     return n;
 }
 
+/*Declaración de función*/
+ASTNode *crearNodoFuncion(const char *id, ASTNode *params, ASTNode *body){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_FUNCION;
+    n->firstChild = params ? params : body;
+    if(params){
+        ASTNode *p = params;
+        while(p->nextSibling)
+            p = p->nextSibling;
+        p->nextSibling = body;
+    }
+    n->nextSibling = NULL;
+    n->dato.funcion.id = strdup(id);
+    n->dato.funcion.params = params;
+    n->dato.funcion.body = body;
+    return n;
+}
+
+/*Llamada a función*/
+ASTNode *crearNodoLlamada(const char *id, ASTNode *args){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_LLAMADA;
+    n->firstChild = args;
+    n->nextSibling = NULL;
+    n->dato.llamada.id = strdup(id);
+    n->dato.llamada.args = args;
+    return n;
+}
+
+/*Parametro de funcion*/
+ASTNode *crearNodoParametro(VarType varType, const char *id) {
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_PARAMETRO;
+    n->firstChild = n->nextSibling = NULL;
+    n->dato.param.varType = varType;
+    n->dato.param.id = strdup(id);
+    return n;
+}
+
+/*Nodo return*/
+ASTNode *crearNodoReturn(ASTNode *expr){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_RETURN;
+    n->firstChild = expr;
+    n->nextSibling = NULL;
+    n->dato.returnNode.expr = expr;
+    return n;
+}
+
 /*Para imprimir recursivamente el árbol AST*/
 void imprimirAST(ASTNode *nodo, int nivel) {
     while (nodo) {
@@ -191,6 +240,18 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 break;
             case T_OPERACION:
                 printf("Op: %s\n", nodo->dato.oper.operador);
+                break;
+            case T_FUNCION:
+                printf("Función %s:\n", nodo->dato.funcion.id);
+                break;
+            case T_LLAMADA:
+                printf("Llamada %s\n", nodo->dato.llamada.id);
+                break;
+            case T_PARAMETRO:
+                printf("Parametro tipo =%d id= %s\n", nodo->dato.param.varType, nodo->dato.param.id);
+                break;
+            case T_RETURN:
+                printf("Return\n");
                 break;
         }
 

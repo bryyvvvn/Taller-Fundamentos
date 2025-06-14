@@ -34,7 +34,7 @@ ASTNode *raiz = NULL; //Raiz del AST
 %token <tipoVar> STRING    /* palabra clave 'string' */
 
 
-%token IF ELSE WHILE PRINT READ
+%token IF ELSE WHILE PRINT READ FUNC RETORNO
 
 /* Operadores relacionales y aritméticos */
 %token IGUALEICHON DIFERENTEICHON MENOR_A MENOR_O_IGUAL_A MAYOR_A MAYOR_O_IGUAL_A
@@ -58,6 +58,10 @@ ASTNode *raiz = NULL; //Raiz del AST
 %type <nodo>   lista_sentencias sentencia
 %type <nodo>   declaracion_variable asignacion
 %type <nodo>   seleccion repeticion entrada_salida
+%type <nodo>   declaracion_funcion llamada_funcion
+%type <nodo>   parametros lista_parametros parametro
+%type <nodo>   argumentos lista_argumentos
+%type <nodo>   retorno
 
 %start programa
 
@@ -90,6 +94,9 @@ sentencia:
   | seleccion { $$ = $1; }
   | repeticion { $$ = $1; }
   | entrada_salida { $$ = $1; }
+  | declaracion_funcion { $$ = $1; }
+  | llamada_funcion SEMICOLON { $$ = $1; }
+  | retorno { $$ = $1; }
 ;
 
 /*Se declaran las variables*/
@@ -163,6 +170,46 @@ entrada_salida:
          $$ = crearNodoRead($3); }
 ;
 
+declaracion_funcion:
+      FUNC ID LPAREN parametros RPAREN LBRACE lista_sentencias RBRACE
+        { $$ = crearNodoFuncion($2,$4,$7);}
+      ;
+
+parametros:
+    /*vacío */ {$$ = NULL;}
+    | lista_parametros {$$ = $1;}
+  ;
+
+lista_parametros:
+      parametro { $$ = $1; }
+    | lista_parametros COMMA parametro { $$ = agregarHermano($1, $3); }
+  ;
+
+parametro:
+      tipo ID { install($2,$1); $$ = crearNodoDeclaracion($1, $2); }
+  ;
+
+/* Llamada a funcion */
+llamada_funcion:
+    ID LPAREN argumentos RPAREN
+      { $$ = crearNodoLlamada($1, $3); }
+  ;
+
+argumentos:
+      /* vacio */ { $$ = NULL; }
+    | lista_argumentos { $$ = $1; }
+  ;
+
+lista_argumentos:
+      expresion { $$ = $1; }
+    | lista_argumentos COMMA expresion { $$ = agregarHermano($1, $3); }
+  ;
+
+/* Sentencia return */
+retorno:
+    RETORNO expresion SEMICOLON { $$ = crearNodoReturn($2); }
+  ;
+
 %%
 
 void yyerror(const char *s) {
@@ -171,7 +218,9 @@ void yyerror(const char *s) {
 
 int main() {
     printf("Iniciando el compilador...\n");
+    push_scope();
     yyparse();
+    pop_scope();
     imprimirAST(raiz,0);
     return 0;
 }
