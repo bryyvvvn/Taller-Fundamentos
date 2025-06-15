@@ -43,6 +43,7 @@ ASTNode *raiz = NULL; //Raiz del AST
 /* Puntuación */
 %token ASSIGN SEMICOLON COMMA
 %token LPAREN RPAREN LBRACE RBRACE
+%token LSQUARE RSQUARE
 
 /* Precedencia y asociatividad */
 %left ADICION RESTACION
@@ -109,6 +110,9 @@ declaracion_variable:
       {install($2,$1); //Inserta sin inicializar
         /* Nodo declaración sin inicializar */
       $$ = crearNodoDeclaracion($1, $2);}
+  | tipo ID LSQUARE NUM RSQUARE SEMICOLON
+      {install($2,$1);
+        $$ = crearNodoDeclaracionArreglo($1,$2,$4);}
 ;
 
 /*Tipos de variables*/
@@ -124,6 +128,9 @@ asignacion:
       {context_check($1); //Error si no estaba declarado
         /*Nodo de asignación*/
         $$ = crearNodoAsignacion($1, $3);}
+    | ID LSQUARE expresion RSQUARE ASSIGN expresion SEMICOLON
+      {context_check($1);
+        $$ = crearNodoAsignacionArreglo($1,$3,$6);}
 ;
 
 /*Todas las expresiones que utiliza el lenguaje*/
@@ -144,6 +151,8 @@ expresion:
   | CADENA                              { $$ = crearNodoCadena($1); }
   | ID                                  {context_check($1); // Verifica si existe
                                           $$ = crearNodoIdentificador($1); }
+  | ID LSQUARE expresion RSQUARE        {context_check($1); $$ = crearNodoAccesoArreglo($1,$3); }
+  | llamada_funcion                     { $$ = $1; }
 ;
 
 /*Funciones if y else*/
@@ -167,12 +176,15 @@ entrada_salida:
       { $$ = crearNodoPrint($3); }
   | READ LPAREN ID RPAREN SEMICOLON
       {context_check($3); // Para que no se lea si no está declarado
-         $$ = crearNodoRead($3); }
+         $$ = crearNodoRead($3, NULL); }
+  | READ LPAREN ID LSQUARE expresion RSQUARE RPAREN SEMICOLON
+      {context_check($3); $$ = crearNodoRead($3, $5); }
+  ;
 ;
 
 declaracion_funcion:
-      FUNC ID LPAREN parametros RPAREN LBRACE lista_sentencias RBRACE
-        { $$ = crearNodoFuncion($2,$4,$7);}
+      FUNC ID {install($2, TYPE_FUNC); push_scope();} LPAREN parametros RPAREN LBRACE lista_sentencias RBRACE
+        { $$ = crearNodoFuncion($2,$5,$8); pop_scope(); }
       ;
 
 parametros:
@@ -186,7 +198,7 @@ lista_parametros:
   ;
 
 parametro:
-      tipo ID { install($2,$1); $$ = crearNodoParametro($1, $2); }
+     tipo ID { install($2,$1); $$ = crearNodoParametro($1, $2); } 
   ;
 
 /* Llamada a funcion */

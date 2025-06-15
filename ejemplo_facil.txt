@@ -1,0 +1,9 @@
+int x;
+int y;
+int resultado;
+
+read(x);
+read(y);
+resultado = x + y;
+print("La suma es:");
+print(resultado);

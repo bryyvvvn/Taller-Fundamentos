@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 /*VarType permite distinguir entre variables de tipo int y float*/
-typedef enum{TYPE_INT, TYPE_FLOAT, TYPE_STRING} VarType;
+typedef enum{TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_FUNC} VarType;
 
 /*Nodo para la tabla de simbolos*/
 typedef struct symrec{

@@ -84,7 +84,9 @@ extern int yydebug;
     LPAREN = 285,                  /* LPAREN  */
     RPAREN = 286,                  /* RPAREN  */
     LBRACE = 287,                  /* LBRACE  */
-    RBRACE = 288                   /* RBRACE  */
+    RBRACE = 288,                  /* RBRACE  */
+    LSQUARE = 289,                 /* LSQUARE  */
+    RSQUARE = 290                  /* RSQUARE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -101,7 +103,7 @@ union YYSTYPE
     ASTNode *nodo; /* nodos para construir el AST */
     VarType tipoVar; /*para la variable tipo*/
 
-#line 105 "parser.tab.h"
+#line 107 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

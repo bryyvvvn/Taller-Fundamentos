@@ -22,6 +22,7 @@ const char* obtenerTipoC(VarType tipo) {
         case TYPE_INT: return "int";
         case TYPE_FLOAT: return "float";
         case TYPE_STRING: return "char*";
+        case TYPE_FUNC: return "int";
         default: return "unknown";
     }
 }
@@ -42,6 +43,19 @@ void generarCodigoExpresion(ASTNode *nodo) {
         fprintf(salida, " %s ", nodo->dato.oper.operador);
         generarCodigoExpresion(nodo->dato.oper.right);
         fprintf(salida, ")");
+    } else if (nodo->tipo == T_ACCESO_ARREGLO) {
+        fprintf(salida, "%s[", nodo->dato.arrAccess.id);
+        generarCodigoExpresion(nodo->dato.arrAccess.index);
+        fprintf(salida, "]");
+    } else if (nodo->tipo == T_LLAMADA) {
+        fprintf(salida, "%s(", nodo->dato.llamada.id);
+        ASTNode *arg = nodo->dato.llamada.args;
+        while(arg){
+            generarCodigoExpresion(arg);
+            if(arg->nextSibling) fprintf(salida, ", ");
+            arg = arg->nextSibling;
+        }
+        fprintf(salida, ")");
     }
 }
 
@@ -55,6 +69,8 @@ void generarCodigoDeclaracion(ASTNode *nodo) {
         fprintf(salida, "%s %s = ", obtenerTipoC(nodo->dato.declAsig.varType), nodo->dato.declAsig.id);
         generarCodigoExpresion(nodo->dato.declAsig.initExpr);
         fprintf(salida, ";\n");
+    } else if (nodo->tipo == T_DECLARACION_ARREGLO) {
+        fprintf(salida, "%s %s[%d];\n", obtenerTipoC(nodo->dato.declArr.varType), nodo->dato.declArr.id, nodo->dato.declArr.size);
     }
 }
 
@@ -62,6 +78,14 @@ void generarCodigoDeclaracion(ASTNode *nodo) {
 void generarCodigoAsignacion(ASTNode *nodo) {
     fprintf(salida, "%s = ", nodo->dato.asign.id);
     generarCodigoExpresion(nodo->dato.asign.expr);
+    fprintf(salida, ";\n");
+}
+
+void generarCodigoAsignacionArreglo(ASTNode *nodo){
+    fprintf(salida, "%s[", nodo->dato.asignArr.id);
+    generarCodigoExpresion(nodo->dato.asignArr.index);
+    fprintf(salida, "] = ");
+    generarCodigoExpresion(nodo->dato.asignArr.expr);
     fprintf(salida, ";\n");
 }
 
@@ -87,7 +111,7 @@ void generarCodigoWhile(ASTNode *nodo) {
     generarCodigoExpresion(nodo->dato.whileNode.cond);
     fprintf(salida, ") {\n");
     generarBloque(nodo->dato.whileNode.body);
-    fprintf(salida, "\n}");
+    fprintf(salida, "\n}\n");
 }
 
 // Función para generar código de impresión (print)
@@ -139,7 +163,13 @@ void generarCodigoPrint(ASTNode *nodo) {
 
 // Función para generar código de lectura (read)
 void generarCodigoRead(ASTNode *nodo) {
-    fprintf(salida, "scanf(\"%%d\", &%s);\n", nodo->dato.readNode.id);
+    if(nodo->dato.readNode.index){
+        fprintf(salida, "scanf(\"%%d\", &%s[", nodo->dato.readNode.id);
+        generarCodigoExpresion(nodo->dato.readNode.index);
+        fprintf(salida, "]);\n");
+    } else {
+        fprintf(salida, "scanf(\"%%d\", &%s);\n", nodo->dato.readNode.id);
+    }
 }
 
 // Generar código para llamadas de función
@@ -178,10 +208,14 @@ void generarBloque(ASTNode *nodo){
         switch (nodo->tipo) {
             case T_DECLARACION:
             case T_DECLARACION_ASIGNACION:
+            case T_DECLARACION_ARREGLO:
                 generarCodigoDeclaracion(nodo);
                 break;
             case T_ASIGNACION:
                 generarCodigoAsignacion(nodo);
+                break;
+            case T_ASIGNACION_ARREGLO:
+                generarCodigoAsignacionArreglo(nodo);
                 break;
             case T_OPERACION:
                 generarCodigoExpresion(nodo);
@@ -252,6 +286,16 @@ void generarCodigo(ASTNode *nodo){
     fprintf(salida, "#include <stdio.h>\n\n"); //escribe codigo inicial en c
     
     ASTNode *iter = nodo;
+    // Primero, imprimir declaraciones globales
+    while(iter){
+        if(iter->tipo == T_DECLARACION || iter->tipo == T_DECLARACION_ASIGNACION || iter->tipo == T_DECLARACION_ARREGLO){
+            generarCodigoDeclaracion(iter);
+        }
+        iter = iter->nextSibling;
+    }
+
+    // Luego, funciones
+    iter = nodo;
     while(iter){
         if(iter->tipo == T_FUNCION){
             generarCodigoFuncion(iter);
@@ -263,7 +307,7 @@ void generarCodigo(ASTNode *nodo){
 
     iter = nodo;
     while(iter){
-        if(iter->tipo != T_FUNCION){
+        if(iter->tipo != T_FUNCION && iter->tipo != T_DECLARACION && iter->tipo != T_DECLARACION_ASIGNACION && iter->tipo != T_DECLARACION_ARREGLO){
             switch (iter->tipo)
             {
             case T_DECLARACION:
@@ -272,6 +316,9 @@ void generarCodigo(ASTNode *nodo){
                 break;
             case T_ASIGNACION:
                 generarCodigoAsignacion(iter);
+                break;
+            case T_ASIGNACION_ARREGLO:
+                generarCodigoAsignacionArreglo(iter);
                 break;
             case T_OPERACION:
                 generarCodigoExpresion(iter);

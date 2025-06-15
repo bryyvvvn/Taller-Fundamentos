@@ -1,7 +1,11 @@
 #include <stdio.h>
 
+int a;
+int b;
+float promedio;
+char* mensaje;
 void imprimirSaludo(char* texto) {
-printf("%s\n", texto);
+printf("%d\n", texto);
 }
 
 int sumarYMostrar(int x, int y) {
@@ -12,10 +16,6 @@ return suma;
 }
 
 int main() {
-int a;
-int b;
-float promedio;
-char* mensaje;
 scanf("%d", &a);
 scanf("%d", &b);
 mensaje = "Inicio de pruebas";
@@ -33,7 +33,8 @@ while ((a < b)) {
 printf("%d\n", a);
 a = (a + 1);
 
-}printf("%f\n", promedio);
+}
+printf("%f\n", promedio);
 
  return 0;
 }

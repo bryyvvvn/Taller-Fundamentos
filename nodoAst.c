@@ -38,6 +38,28 @@ ASTNode *crearNodoDeclaracionAsignacion(VarType varType,
     return n;
 }
 
+/*Declaración de arreglo*/
+ASTNode *crearNodoDeclaracionArreglo(VarType varType, const char *id, int size){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_DECLARACION_ARREGLO;
+    n->firstChild = n->nextSibling = NULL;
+    n->dato.declArr.varType = varType;
+    n->dato.declArr.id = strdup(id);
+    n->dato.declArr.size = size;
+    return n;
+}
+
+/*Acceso a arreglo*/
+ASTNode *crearNodoAccesoArreglo(const char *id, ASTNode *index){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_ACCESO_ARREGLO;
+    n->firstChild = index;
+    n->nextSibling = NULL;
+    n->dato.arrAccess.id = strdup(id);
+    n->dato.arrAccess.index = index;
+    return n;
+}
+
 /*Nodo asignación*/
 ASTNode *crearNodoAsignacion(const char *id, ASTNode *expr) {
     ASTNode *n = malloc(sizeof(ASTNode));
@@ -46,6 +68,18 @@ ASTNode *crearNodoAsignacion(const char *id, ASTNode *expr) {
     n->nextSibling = NULL;
     n->dato.asign.id   = strdup(id);
     n->dato.asign.expr = expr;
+    return n;
+}
+
+ASTNode *crearNodoAsignacionArreglo(const char *id, ASTNode *index, ASTNode *expr){
+    ASTNode *n = malloc(sizeof(ASTNode));
+    n->tipo = T_ASIGNACION_ARREGLO;
+    n->firstChild = index;
+    index->nextSibling = expr;
+    n->nextSibling = NULL;
+    n->dato.asignArr.id = strdup(id);
+    n->dato.asignArr.index = index;
+    n->dato.asignArr.expr = expr;
     return n;
 }
 
@@ -86,12 +120,13 @@ ASTNode *crearNodoPrint(ASTNode *expr) {
 }
 
 /*Para nodo Read*/
-ASTNode *crearNodoRead(const char *id) {
+ASTNode *crearNodoRead(const char *id, ASTNode *index) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_READ;
-    n->firstChild = NULL;
+    n->firstChild = index;
     n->nextSibling = NULL;
     n->dato.readNode.id = strdup(id);
+    n->dato.readNode.index = index;
     return n;
 }
 
@@ -252,6 +287,12 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 break;
             case T_RETURN:
                 printf("Return\n");
+                break;
+            case T_DECLARACION_ARREGLO:
+                printf("DeclArr: tipo=%d id=%s size=%d\n", nodo->dato.declArr.varType, nodo->dato.declArr.id, nodo->dato.declArr.size);
+                break;
+            case T_ACCESO_ARREGLO:
+                printf("AccesoArr %s\n", nodo->dato.arrAccess.id);
                 break;
         }
 

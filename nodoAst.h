@@ -10,6 +10,7 @@ typedef enum {
     T_DECLARACION,            /* tipo + id                              */
     T_DECLARACION_ASIGNACION, /* tipo + id + expr                      */
     T_ASIGNACION,             /* id + expr                             */
+    T_ASIGNACION_ARREGLO,     /* id[index] = expr                      */
     T_IF,                     /* cond, thenBranch, elseBranch          */
     T_WHILE,                  /* cond, body                            */
     T_PRINT,                  /* expr                                  */
@@ -22,7 +23,9 @@ typedef enum {
     T_FUNCION,                /* declaración de función */
     T_LLAMADA,                /* llamada a función */
     T_PARAMETRO,              /* parametro de función */
-    T_RETURN                  /* sentencia return */
+    T_RETURN,                 /* sentencia return */
+    T_DECLARACION_ARREGLO,    /* declaración de arreglo */
+    T_ACCESO_ARREGLO          /* acceso a arreglo */
 } TipoNodo;
 
 /*Estructura del nodo AST*/
@@ -52,11 +55,31 @@ typedef struct ASTNode {
             struct ASTNode *initExpr;
         } declAsig;
 
+        /* declaración de arreglo */
+        struct {
+            VarType varType;
+            char *id;
+            int size;
+        } declArr;
+
         /* asignación */
         struct {
             char      *id;
             struct ASTNode *expr;
         } asign;
+
+        /* asignación a arreglo */
+        struct {
+            char *id;
+            struct ASTNode *index;
+            struct ASTNode *expr;
+        } asignArr;
+
+        /* acceso a arreglo */
+        struct {
+            char *id;
+            struct ASTNode *index;
+        } arrAccess;
 
         /* if */
         struct {
@@ -79,6 +102,7 @@ typedef struct ASTNode {
         /* read */
         struct {
             char *id;
+            struct ASTNode *index;
         } readNode;
 
         /* operación binaria */
@@ -121,13 +145,16 @@ ASTNode *crearNodoDeclaracion   (VarType VarType, const char *id);
 ASTNode *crearNodoDeclaracionAsignacion(VarType varType,
                                         const char *id,
                                         ASTNode    *initExpr);
+ASTNode *crearNodoDeclaracionArreglo(VarType varType, const char *id, int size);
+ASTNode *crearNodoAccesoArreglo(const char *id, ASTNode *index);
 ASTNode *crearNodoAsignacion    (const char *id, ASTNode *expr);
+ASTNode *crearNodoAsignacionArreglo(const char *id, ASTNode *index, ASTNode *expr);
 ASTNode *crearNodoIf            (ASTNode *cond,
                                  ASTNode *thenBranch,
                                  ASTNode *elseBranch);
 ASTNode *crearNodoWhile         (ASTNode *cond, ASTNode *body);
 ASTNode *crearNodoPrint         (ASTNode *expr);
-ASTNode *crearNodoRead          (const char *id);
+ASTNode *crearNodoRead          (const char *id, ASTNode *index);
 
 ASTNode *crearNodoNumero        (int valor);
 ASTNode *crearNodoDecimal       (float valor);

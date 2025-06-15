@@ -1,0 +1,22 @@
+int n;
+int i;
+int fact;
+
+func factorial(int num) {
+    int temp;
+    int resultado;
+    resultado = 1;
+    temp = 1;
+    while (temp <= num) {
+        resultado = resultado * temp;
+        temp = temp + 1;
+    }
+    return resultado;
+}
+
+print("Ingresa un valor para n:");
+read(n);
+
+fact = factorial(n);
+print("El factorial es:");
+print(fact);

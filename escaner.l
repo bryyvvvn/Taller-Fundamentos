@@ -14,6 +14,8 @@ WHITESPACE   [ \t\r\n]+
 %%
 
 {WHITESPACE}             /* Ignorar espacios, tabs y newlines */
+"//".*                   /* Ignorar comentarios de línea */
+"/\\*([^*]|\\*+[^*/])*\\*+\\*/"   /* Ignorar comentarios de bloque */
 
   /*Palabras clave*/
 "int"                    { yylval.sval = strdup(yytext); return INT; }
@@ -52,6 +54,8 @@ WHITESPACE   [ \t\r\n]+
 ")"                      { return RPAREN; }
 "{"                      { return LBRACE; }
 "}"                      { return RBRACE; }
+"\["                     { return LSQUARE; }
+"\]"                     { return RSQUARE; }
 
 \"([^\"\\]|\\.)*\"       {
                            /* Literal de cadena: eliminar comillas */
