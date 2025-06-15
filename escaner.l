@@ -18,18 +18,18 @@ WHITESPACE   [ \t\r\n]+
 "/\\*([^*]|\\*+[^*/])*\\*+\\*/"   /* Ignorar comentarios de bloque */
 
   /*Palabras clave*/
-"int"                    { yylval.sval = strdup(yytext); return INT; }
-"float"                  { yylval.sval = strdup(yytext); return FLOAT; }
-"string"                 { yylval.sval = strdup(yytext); return STRING; }
+"DIAMANTE"               { yylval.sval = strdup(yytext); return INT; }
+"LAVA"                   { yylval.sval = strdup(yytext); return FLOAT; }
+"LIBRO"                  { yylval.sval = strdup(yytext); return STRING; }
 
  /*Palabras de control*/
-"if"                     { return IF; }
-"else"                   { return ELSE; }
-"while"                  { return WHILE; }
-"print"                  { return PRINT; }
-"read"                   { return READ; }
-"func"                   { return FUNC; }
-"return"                 { return RETORNO; }
+"ENDER"                  { return IF; }
+"CREEPER"                { return ELSE; }
+"ZOMBIE"                 { return WHILE; }
+"LETRERO"                { return PRINT; }
+"HORNO"                  { return READ; }
+"PORTAL"                 { return FUNC; }
+"TESORO"                 { return RETORNO; }
 
  /*Operadores del lenguaje*/
 "=="                     { return IGUALEICHON; }

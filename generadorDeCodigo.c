@@ -19,10 +19,10 @@ void inicializarSalida() {
 // Función para obtener el tipo de variable en C (para la generación de código)
 const char* obtenerTipoC(VarType tipo) {
     switch (tipo) {
-        case TYPE_INT: return "int";
-        case TYPE_FLOAT: return "float";
-        case TYPE_STRING: return "char*";
-        case TYPE_FUNC: return "int";
+        case TYPE_INT: return "DIAMANTE";
+        case TYPE_FLOAT: return "LAVA";
+        case TYPE_STRING: return "LIBRO";
+        case TYPE_FUNC: return "DIAMANTE";
         default: return "unknown";
     }
 }
@@ -92,13 +92,13 @@ void generarCodigoAsignacionArreglo(ASTNode *nodo){
 
 // Función para generar código de control de flujo (if-else)
 void generarCodigoIf(ASTNode *nodo) {
-    fprintf(salida, "if (");
+    fprintf(salida, "ENDER (");
     generarCodigoExpresion(nodo->dato.ifNode.cond);
     fprintf(salida, ") {\n");
     generarBloque(nodo->dato.ifNode.thenBranch);
     fprintf(salida, "\n} ");
     if (nodo->dato.ifNode.elseBranch) {
-        fprintf(salida, "else {\n");
+        fprintf(salida, "CREEPER {\n");
         generarBloque(nodo->dato.ifNode.elseBranch);
         fprintf(salida, "\n}");
     }
@@ -107,7 +107,7 @@ void generarCodigoIf(ASTNode *nodo) {
 
 // Función para generar código de ciclo while
 void generarCodigoWhile(ASTNode *nodo) {
-    fprintf(salida, "while (");
+    fprintf(salida, "ZOMBIE (");
     generarCodigoExpresion(nodo->dato.whileNode.cond);
     fprintf(salida, ") {\n");
     generarBloque(nodo->dato.whileNode.body);
@@ -116,7 +116,7 @@ void generarCodigoWhile(ASTNode *nodo) {
 
 // Función para generar código de impresión (print)
 void generarCodigoPrint(ASTNode *nodo) {
-    fprintf(salida, "printf(\"");
+    fprintf(salida, "LETRERO(\"");
 
     // Si es un número entero, se imprime como %d
     if (nodo->dato.printNode.expr->tipo == T_NUMERO) {
@@ -164,11 +164,11 @@ void generarCodigoPrint(ASTNode *nodo) {
 // Función para generar código de lectura (read)
 void generarCodigoRead(ASTNode *nodo) {
     if(nodo->dato.readNode.index){
-        fprintf(salida, "scanf(\"%%d\", &%s[", nodo->dato.readNode.id);
+        fprintf(salida, "HORNO(\"%%d\", &%s[", nodo->dato.readNode.id);
         generarCodigoExpresion(nodo->dato.readNode.index);
         fprintf(salida, "]);\n");
     } else {
-        fprintf(salida, "scanf(\"%%d\", &%s);\n", nodo->dato.readNode.id);
+        fprintf(salida, "HORNO(\"%%d\", &%s);\n", nodo->dato.readNode.id);
     }
 }
 
@@ -196,7 +196,7 @@ int contieneReturn(ASTNode *nodo){
 }
 
 void generarCodigoReturn(ASTNode *nodo){
-    fprintf(salida, "return ");
+    fprintf(salida, "TESORO ");
     if(nodo->dato.returnNode.expr)
         generarCodigoExpresion(nodo->dato.returnNode.expr);
     fprintf(salida, ";\n");
@@ -248,7 +248,7 @@ void generarBloque(ASTNode *nodo){
 
 void generarCodigoFuncion(ASTNode *nodo){
     int tieneRetorno = contieneReturn(nodo->dato.funcion.body);
-    fprintf(salida, "%s %s(", tieneRetorno ? "int" : "void", nodo->dato.funcion.id);
+    fprintf(salida, "%s %s(", tieneRetorno ? "DIAMANTE" : "void", nodo->dato.funcion.id);
     ASTNode *param = nodo->dato.funcion.params;
     while(param && param != nodo->dato.funcion.body){
         VarType tipo; 
@@ -283,7 +283,17 @@ void generarCodigoFuncion(ASTNode *nodo){
 
 void generarCodigo(ASTNode *nodo){
     inicializarSalida(); // abre archivo
-    fprintf(salida, "#include <stdio.h>\n\n"); //escribe codigo inicial en c
+     fprintf(salida, "#include <stdio.h>\n"); //escribe codigo inicial en c
+    fprintf(salida, "#define DIAMANTE int\n");
+    fprintf(salida, "#define LAVA float\n");
+    fprintf(salida, "#define LIBRO char*\n");
+    fprintf(salida, "#define ENDER if\n");
+    fprintf(salida, "#define CREEPER else\n");
+    fprintf(salida, "#define ZOMBIE while\n");
+    fprintf(salida, "#define LETRERO printf\n");
+    fprintf(salida, "#define HORNO scanf\n");
+    fprintf(salida, "#define PORTAL\n");
+    fprintf(salida, "#define TESORO return\n\n");
     
     ASTNode *iter = nodo;
     // Primero, imprimir declaraciones globales

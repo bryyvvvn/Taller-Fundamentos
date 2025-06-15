@@ -229,19 +229,29 @@ ASTNode *crearNodoReturn(ASTNode *expr){
 }
 
 /*Para imprimir recursivamente el árbol AST*/
+const char* nombreTipo(VarType tipo){
+    switch(tipo){
+        case TYPE_INT: return "DIAMANTE";
+        case TYPE_FLOAT: return "LAVA";
+        case TYPE_STRING: return "LIBRO";
+        case TYPE_FUNC: return "DIAMANTE";
+        default: return "unknown";
+    }
+}
+
 void imprimirAST(ASTNode *nodo, int nivel) {
     while (nodo) {
         for (int i = 0; i < nivel; i++) printf("  "); 
         //Imprimir información del nodo actual
         switch (nodo->tipo) {
             case T_DECLARACION:
-                printf("Decl: tipo=%d id=%s\n",
-                       nodo->dato.decl.varType,
+                printf("Decl: tipo=%s id=%s\n",
+                       nombreTipo(nodo->dato.decl.varType),
                        nodo->dato.decl.id);
                 break;
             case T_DECLARACION_ASIGNACION:
-                printf("Decl-Asig: tipo=%d id=%s\n",
-                       nodo->dato.declAsig.varType,
+                printf("Decl-Asig: tipo=%s id=%s\n",
+                       nombreTipo(nodo->dato.declAsig.varType),
                        nodo->dato.declAsig.id);
                 break;
             case T_ASIGNACION:
@@ -249,16 +259,16 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                        nodo->dato.asign.id);
                 break;
             case T_IF:
-                printf("If:\n");
+                printf("ENDER:\n");
                 break;
             case T_WHILE:
-                printf("While:\n");
+                printf("ZOMBIE:\n");
                 break;
             case T_PRINT:
-                printf("Print:\n");
+                printf("LETRERO:\n");
                 break;
             case T_READ:
-                printf("Read id=%s\n",
+                printf("HORNO id=%s\n",
                        nodo->dato.readNode.id);
                 break;
             case T_NUMERO:
@@ -268,7 +278,7 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 printf("Decimal: %.2f\n", nodo->dato.valorDecimal);
                 break;
             case T_CADENA:
-                printf("Cadena: \"%s\"\n", nodo->dato.cadena);
+                printf("LIBRO: \"%s\"\n", nodo->dato.cadena);
                 break;
             case T_IDENTIFICADOR:
                 printf("Id: %s\n", nodo->dato.identificador);
@@ -277,19 +287,19 @@ void imprimirAST(ASTNode *nodo, int nivel) {
                 printf("Op: %s\n", nodo->dato.oper.operador);
                 break;
             case T_FUNCION:
-                printf("Función %s:\n", nodo->dato.funcion.id);
+                printf("PORTAL %s:\n", nodo->dato.funcion.id);
                 break;
             case T_LLAMADA:
                 printf("Llamada %s\n", nodo->dato.llamada.id);
                 break;
             case T_PARAMETRO:
-                printf("Parametro tipo =%d id= %s\n", nodo->dato.param.varType, nodo->dato.param.id);
+                printf("Parametro tipo =%s id= %s\n", nombreTipo(nodo->dato.param.varType), nodo->dato.param.id);
                 break;
             case T_RETURN:
-                printf("Return\n");
+                printf("TESORO\n");
                 break;
             case T_DECLARACION_ARREGLO:
-                printf("DeclArr: tipo=%d id=%s size=%d\n", nodo->dato.declArr.varType, nodo->dato.declArr.id, nodo->dato.declArr.size);
+                printf("DeclArr: tipo=%s id=%s size=%d\n", nombreTipo(nodo->dato.declArr.varType), nodo->dato.declArr.id, nodo->dato.declArr.size);
                 break;
             case T_ACCESO_ARREGLO:
                 printf("AccesoArr %s\n", nodo->dato.arrAccess.id);

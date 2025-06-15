@@ -1,42 +1,42 @@
-int tam;
-int i;
-int suma;
-string mensaje;
-int numeros[10];
+DIAMANTE tam;
+DIAMANTE i;
+DIAMANTE suma;
+LIBRO mensaje;
+DIAMANTE numeros[10];
 
-func llenarArreglo(int size) {
-    int idx;
+PORTAL llenarArreglo(DIAMANTE size) {
+    DIAMANTE idx;
     idx = 0;
-    while (idx < size) {
-        read(numeros[idx]);
+    ZOMBIE (idx < size) {
+        HORNO(numeros[idx]);
         idx = idx + 1;
     }
 }
 
-func calcularSuma(int size) {
-    int idx;
-    int total;
+PORTAL calcularSuma(DIAMANTE size) {
+    DIAMANTE idx;
+    DIAMANTE total;
     idx = 0;
     total = 0;
-    while (idx < size) {
+    ZOMBIE (idx < size) {
         total = total + numeros[idx];
         idx = idx + 1;
     }
-    return total;
+    TESORO total;
 }
 
 mensaje = "Ingresa cantidad de elementos (hasta 10):";
-print(mensaje);
-read(tam);
+LETRERO(mensaje);
+HORNO(tam);
 
 llenarArreglo(tam);
 suma = calcularSuma(tam);
 
-print("La suma total es:");
-print(suma);
+LETRERO("La suma total es:");
+LETRERO(suma);
 
-if (suma > 100) {
-    print("La suma supera 100");
-} else {
-    print("La suma es 100 o menos");
+ENDER (suma > 100) {
+    LETRERO("La suma supera 100");
+} CREEPER {
+    LETRERO("La suma es 100 o menos");
 }
