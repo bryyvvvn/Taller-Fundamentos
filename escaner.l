@@ -9,11 +9,13 @@
 /* Definición de los patrones*/
 DIGIT        [0-9]
 ID           [a-zA-Z_][a-zA-Z0-9_]*
-WHITESPACE   [ \t\n]+
+WHITESPACE   [ \t\r\n]+
 
 %%
 
 {WHITESPACE}             /* Ignorar espacios, tabs y newlines */
+"//".*                   /* Ignorar comentarios de línea */
+"/\\*([^*]|\\*+[^*/])*\\*+\\*/"   /* Ignorar comentarios de bloque */
 
   /*Palabras clave*/
 "int"                    { yylval.sval = strdup(yytext); return INT; }
@@ -26,6 +28,8 @@ WHITESPACE   [ \t\n]+
 "while"                  { return WHILE; }
 "print"                  { return PRINT; }
 "read"                   { return READ; }
+"func"                   { return FUNC; }
+"return"                 { return RETORNO; }
 
  /*Operadores del lenguaje*/
 "=="                     { return IGUALEICHON; }
@@ -50,6 +54,8 @@ WHITESPACE   [ \t\n]+
 ")"                      { return RPAREN; }
 "{"                      { return LBRACE; }
 "}"                      { return RBRACE; }
+"\["                     { return LSQUARE; }
+"\]"                     { return RSQUARE; }
 
 \"([^\"\\]|\\.)*\"       {
                            /* Literal de cadena: eliminar comillas */

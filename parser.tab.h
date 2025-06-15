@@ -66,23 +66,27 @@ extern int yydebug;
     WHILE = 267,                   /* WHILE  */
     PRINT = 268,                   /* PRINT  */
     READ = 269,                    /* READ  */
-    IGUALEICHON = 270,             /* IGUALEICHON  */
-    DIFERENTEICHON = 271,          /* DIFERENTEICHON  */
-    MENOR_A = 272,                 /* MENOR_A  */
-    MENOR_O_IGUAL_A = 273,         /* MENOR_O_IGUAL_A  */
-    MAYOR_A = 274,                 /* MAYOR_A  */
-    MAYOR_O_IGUAL_A = 275,         /* MAYOR_O_IGUAL_A  */
-    ADICION = 276,                 /* ADICION  */
-    RESTACION = 277,               /* RESTACION  */
-    MULTIPLICATEICHON = 278,       /* MULTIPLICATEICHON  */
-    DIVISEISHON = 279,             /* DIVISEISHON  */
-    ASSIGN = 280,                  /* ASSIGN  */
-    SEMICOLON = 281,               /* SEMICOLON  */
-    COMMA = 282,                   /* COMMA  */
-    LPAREN = 283,                  /* LPAREN  */
-    RPAREN = 284,                  /* RPAREN  */
-    LBRACE = 285,                  /* LBRACE  */
-    RBRACE = 286                   /* RBRACE  */
+    FUNC = 270,                    /* FUNC  */
+    RETORNO = 271,                 /* RETORNO  */
+    IGUALEICHON = 272,             /* IGUALEICHON  */
+    DIFERENTEICHON = 273,          /* DIFERENTEICHON  */
+    MENOR_A = 274,                 /* MENOR_A  */
+    MENOR_O_IGUAL_A = 275,         /* MENOR_O_IGUAL_A  */
+    MAYOR_A = 276,                 /* MAYOR_A  */
+    MAYOR_O_IGUAL_A = 277,         /* MAYOR_O_IGUAL_A  */
+    ADICION = 278,                 /* ADICION  */
+    RESTACION = 279,               /* RESTACION  */
+    MULTIPLICATEICHON = 280,       /* MULTIPLICATEICHON  */
+    DIVISEISHON = 281,             /* DIVISEISHON  */
+    ASSIGN = 282,                  /* ASSIGN  */
+    SEMICOLON = 283,               /* SEMICOLON  */
+    COMMA = 284,                   /* COMMA  */
+    LPAREN = 285,                  /* LPAREN  */
+    RPAREN = 286,                  /* RPAREN  */
+    LBRACE = 287,                  /* LBRACE  */
+    RBRACE = 288,                  /* RBRACE  */
+    LSQUARE = 289,                 /* LSQUARE  */
+    RSQUARE = 290                  /* RSQUARE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -99,7 +103,7 @@ union YYSTYPE
     ASTNode *nodo; /* nodos para construir el AST */
     VarType tipoVar; /*para la variable tipo*/
 
-#line 103 "parser.tab.h"
+#line 107 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

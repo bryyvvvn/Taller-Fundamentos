@@ -1,0 +1,37 @@
+int a;
+int b;
+float promedio;
+string mensaje;
+
+func imprimirSaludo(string texto) {
+    print(texto);
+}
+
+func sumarYMostrar(int x, int y) {
+    int suma;
+    suma = x + y;
+    print(suma);
+    return suma;
+}
+
+read(a);
+read(b);
+mensaje = "Inicio de pruebas";
+print(mensaje);
+
+promedio = (a + b) / 2;
+
+if (a < b) {
+    print("a es menor que b");
+} else {
+    print("a es mayor o igual que b");
+}
+
+sumarYMostrar(a, b);
+
+while (a < b) {
+    print(a);
+    a = a + 1;
+}
+
+print(promedio);
