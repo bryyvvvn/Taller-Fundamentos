@@ -1,37 +1,37 @@
-int a;
-int b;
-float promedio;
-string mensaje;
+DIAMANTE a;
+DIAMANTE b;
+LAVA promedio;
+LIBRO mensaje;
 
-func imprimirSaludo(string texto) {
-    print(texto);
+PORTAL imprimirSaludo(LIBRO texto) {
+    LETRERO(texto);
 }
 
-func sumarYMostrar(int x, int y) {
-    int suma;
+PORTAL sumarYMostrar(DIAMANTE x, DIAMANTE y) {
+    DIAMANTE suma;
     suma = x + y;
-    print(suma);
-    return suma;
+    LETRERO(suma);
+    TESORO suma;
 }
 
-read(a);
-read(b);
+HORNO(a);
+HORNO(b);
 mensaje = "Inicio de pruebas";
-print(mensaje);
+LETRERO(mensaje);
 
 promedio = (a + b) / 2;
 
-if (a < b) {
-    print("a es menor que b");
-} else {
-    print("a es mayor o igual que b");
+ENDER (a < b) {
+    LETRERO("a es menor que b");
+} CREEPER {
+    LETRERO("a es mayor o igual que b");
 }
 
 sumarYMostrar(a, b);
 
-while (a < b) {
-    print(a);
+ZOMBIE (a < b) {
+    LETRERO(a);
     a = a + 1;
 }
 
-print(promedio);
+LETRERO(promedio);

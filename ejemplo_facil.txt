@@ -1,9 +1,9 @@
-int x;
-int y;
-int resultado;
+DIAMANTE x;
+DIAMANTE y;
+DIAMANTE resultado;
 
-read(x);
-read(y);
+HORNO(x);
+HORNO(y);
 resultado = x + y;
-print("La suma es:");
-print(resultado);
+LETRERO("La suma es:");
+LETRERO(resultado);

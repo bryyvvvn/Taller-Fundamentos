@@ -1,22 +1,22 @@
-int n;
-int i;
-int fact;
+DIAMANTE n;
+DIAMANTE i;
+DIAMANTE fact;
 
-func factorial(int num) {
-    int temp;
-    int resultado;
+PORTAL factorial(DIAMANTE num) {
+    DIAMANTE temp;
+    DIAMANTE resultado;
     resultado = 1;
     temp = 1;
-    while (temp <= num) {
+    ZOMBIE (temp <= num) {
         resultado = resultado * temp;
         temp = temp + 1;
     }
-    return resultado;
+    TESORO resultado;
 }
 
-print("Ingresa un valor para n:");
-read(n);
+LETRERO("Ingresa un valor para n:");
+HORNO(n);
 
 fact = factorial(n);
-print("El factorial es:");
-print(fact);
+LETRERO("El factorial es:");
+LETRERO(fact);
