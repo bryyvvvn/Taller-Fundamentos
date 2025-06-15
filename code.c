@@ -1,13 +1,39 @@
 #include <stdio.h>
 
-int doble(int n){
-    return n*2;
+void imprimirSaludo(char* texto) {
+printf("%s\n", texto);
+}
+
+int sumarYMostrar(int x, int y) {
+int suma;
+suma = (x + y);
+printf("%d\n", suma);
+return suma;
 }
 
 int main() {
-int x=5;
-int y;
-y = doble(x);
-printf("%d\n", y);
-return 0;
+int a;
+int b;
+float promedio;
+char* mensaje;
+scanf("%d", &a);
+scanf("%d", &b);
+mensaje = "Inicio de pruebas";
+printf("%s\n", mensaje);
+promedio = ((a + b) / 2);
+if ((a < b)) {
+printf("%s\n", "a es menor que b");
+printf("%s\n", "a es mayor o igual que b");
+
+} else {
+printf("%s\n", "a es mayor o igual que b");
+
+}sumarYMostrar(a, b);
+while ((a < b)) {
+printf("%d\n", a);
+a = (a + 1);
+
+}printf("%f\n", promedio);
+
+ return 0;
 }

@@ -154,6 +154,17 @@ void generarCodigoLlamada(ASTNode *nodo) {
     fprintf(salida, ");\n");
 }
 
+int contieneReturn(ASTNode *nodo){
+    while(nodo){
+        if(nodo->tipo == T_RETURN)
+            return 1;
+        if(contieneReturn(nodo->firstChild))
+            return 1;
+        nodo = nodo->nextSibling;
+    }
+    return 0;
+}
+
 void generarCodigoReturn(ASTNode *nodo){
     fprintf(salida, "return ");
     if(nodo->dato.returnNode.expr)
@@ -202,11 +213,33 @@ void generarBloque(ASTNode *nodo){
 }
 
 void generarCodigoFuncion(ASTNode *nodo){
-    fprintf(salida, "void %s(", nodo->dato.funcion.id);
+    int tieneRetorno = contieneReturn(nodo->dato.funcion.body);
+    fprintf(salida, "%s %s(", tieneRetorno ? "int" : "void", nodo->dato.funcion.id);
     ASTNode *param = nodo->dato.funcion.params;
-    while(param){
-        fprintf(salida, "%s %s", obtenerTipoC(param->dato.param.varType), param->dato.param.id);
-        if(param -> nextSibling) fprintf(salida, ", ");
+    while(param && param != nodo->dato.funcion.body){
+        VarType tipo; 
+        const char *nombre;
+        switch(param->tipo){
+            case T_PARAMETRO:
+                tipo = param->dato.param.varType;
+                nombre = param->dato.param.id;
+                break;
+            case T_DECLARACION:
+                tipo = param->dato.decl.varType;
+                nombre = param->dato.decl.id;
+                break;
+            case T_DECLARACION_ASIGNACION:
+                tipo = param->dato.declAsig.varType;
+                nombre = param->dato.declAsig.id;
+                break;
+            default:
+                tipo = TYPE_INT;
+                nombre = "unknown";
+                break;
+        }
+        fprintf(salida, "%s %s", obtenerTipoC(tipo), nombre);
+        if(param->nextSibling && param->nextSibling != nodo->dato.funcion.body)
+        fprintf(salida, ", ");
         param = param->nextSibling;
     }
     fprintf(salida, ") {\n");

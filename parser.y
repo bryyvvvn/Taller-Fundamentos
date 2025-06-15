@@ -186,7 +186,7 @@ lista_parametros:
   ;
 
 parametro:
-      tipo ID { install($2,$1); $$ = crearNodoDeclaracion($1, $2); }
+      tipo ID { install($2,$1); $$ = crearNodoParametro($1, $2); }
   ;
 
 /* Llamada a funcion */
