@@ -30,12 +30,17 @@ PORTAL division(DIAMANTE a, DIAMANTE b) {
 // Variables de entrada
 DIAMANTE x;
 DIAMANTE y;
-
+LETRERO("Ingresa el primer numero:");
 HORNO(x);
+LETRERO("Ingresa el segundo numero:");
 HORNO(y);
 
 // Llamadas a las funciones
+LETRERO("El resultado de la suma es:");
 suma(x, y);
+LETRERO("El resultado de la resta es:");
 resta(x, y);
+LETRERO("El resultado de la multiplicacion es:");
 multiplicacion(x, y);
+LETRERO("El resultado de la division es:");
 division(x, y);

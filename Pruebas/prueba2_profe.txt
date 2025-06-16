@@ -16,8 +16,11 @@ PORTAL exponente(DIAMANTE base, DIAMANTE exp) {
 DIAMANTE b;
 DIAMANTE e;
 
+LETRERO("Ingresa el primer numero:");
 HORNO(b);
+LETRERO("Ingresa el segundo numero:");
 HORNO(e);
 
 // Llamada a la función de exponente
+LETRERO("El exponente es:");
 exponente(b, e);

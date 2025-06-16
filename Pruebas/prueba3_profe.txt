@@ -28,11 +28,19 @@ PORTAL exponente(DIAMANTE base, DIAMANTE exp) {
 DIAMANTE v1;
 DIAMANTE v2;
 
+LETRERO("Ingresa el primer numero:");
 HORNO(v1);
+LETRERO("Ingresa el segundo numero:");
 HORNO(v2);
 
+LETRERO("El resultado de la suma es:");
 suma(v1, v2);
+LETRERO("El resultado de la resta es:");
 resta(v1, v2);
+LETRERO("El resultado de la multiplicacion es:");
 mult(v1, v2);
+LETRERO("El resultado de la division es:");
 divi(v1, v2);
+
+LETRERO("El exponente es:");
 exponente(v1, v2);
