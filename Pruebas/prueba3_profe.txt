@@ -1,0 +1,38 @@
+// Operaciones básicas
+PORTAL suma(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r; r = a + b; LETRERO(r); TESORO r;
+}
+PORTAL resta(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r; r = a - b; LETRERO(r); TESORO r;
+}
+PORTAL mult(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r; r = a * b; LETRERO(r); TESORO r;
+}
+PORTAL divi(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r; r = a / b; LETRERO(r); TESORO r;
+}
+
+// Exponente con ZOMBIE
+PORTAL exponente(DIAMANTE base, DIAMANTE exp) {
+    DIAMANTE r; r = 1;
+    DIAMANTE c; c = exp;
+    ZOMBIE (c > 0) {
+        r = r * base;
+        c = c - 1;
+    }
+    LETRERO(r);
+    TESORO r;
+}
+
+// Programa principal
+DIAMANTE v1;
+DIAMANTE v2;
+
+HORNO(v1);
+HORNO(v2);
+
+suma(v1, v2);
+resta(v1, v2);
+mult(v1, v2);
+divi(v1, v2);
+exponente(v1, v2);
