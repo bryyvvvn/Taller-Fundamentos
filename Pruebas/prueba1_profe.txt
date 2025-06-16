@@ -1,0 +1,41 @@
+// Declaración de funciones para operaciones básicas
+PORTAL suma(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE resultado;
+    resultado = a + b;
+    LETRERO(resultado);
+    TESORO resultado;
+}
+
+PORTAL resta(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE resultado;
+    resultado = a - b;
+    LETRERO(resultado);
+    TESORO resultado;
+}
+
+PORTAL multiplicacion(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE resultado;
+    resultado = a * b;
+    LETRERO(resultado);
+    TESORO resultado;
+}
+
+PORTAL division(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE resultado;
+    resultado = a / b;
+    LETRERO(resultado);
+    TESORO resultado;
+}
+
+// Variables de entrada
+DIAMANTE x;
+DIAMANTE y;
+
+HORNO(x);
+HORNO(y);
+
+// Llamadas a las funciones
+suma(x, y);
+resta(x, y);
+multiplicacion(x, y);
+division(x, y);

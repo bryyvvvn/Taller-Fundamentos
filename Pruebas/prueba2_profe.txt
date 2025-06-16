@@ -1,0 +1,23 @@
+// Función que calcula base^exp mediante multiplicaciones sucesivas
+PORTAL exponente(DIAMANTE base, DIAMANTE exp) {
+    DIAMANTE resultado;
+    resultado = 1;
+    DIAMANTE contador;
+    contador = exp;
+    ZOMBIE (contador > 0) {
+        resultado = resultado * base;
+        contador = contador - 1;
+    }
+    LETRERO(resultado);
+    TESORO resultado;
+}
+
+// Variables de entrada
+DIAMANTE b;
+DIAMANTE e;
+
+HORNO(b);
+HORNO(e);
+
+// Llamada a la función de exponente
+exponente(b, e);
