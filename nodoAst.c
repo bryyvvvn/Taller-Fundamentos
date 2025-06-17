@@ -119,7 +119,7 @@ ASTNode *crearNodoPrint(ASTNode *expr) {
     return n;
 }
 
-/*Para nodo Read*/
+/*Para nodo Read (Input)*/
 ASTNode *crearNodoRead(const char *id, ASTNode *index) {
     ASTNode *n = malloc(sizeof(ASTNode));
     n->tipo = T_READ;
