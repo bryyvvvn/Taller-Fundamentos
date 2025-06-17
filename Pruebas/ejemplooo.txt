@@ -1,0 +1,4 @@
+DIAMANTE x = 5;
+LAVA y = 1.5;
+LAVA suma = (x+y);
+LETRERO(suma);

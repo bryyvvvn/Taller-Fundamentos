@@ -1,0 +1,111 @@
+// — Operaciones básicas —
+PORTAL suma(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r;
+    r = a + b;
+    LETRERO(r);
+    TESORO r;
+}
+
+PORTAL resta(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r;
+    r = a - b;
+    LETRERO(r);
+    TESORO r;
+}
+
+PORTAL mult(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r;
+    r = a * b;
+    LETRERO(r);
+    TESORO r;
+}
+
+PORTAL divi(DIAMANTE a, DIAMANTE b) {
+    DIAMANTE r;
+    ENDER (b == 0) {
+        LETRERO("Error: division por cero");
+        TESORO 0;
+    }
+    r = a / b;
+    LETRERO(r);
+    TESORO r;
+}
+
+// — Exponente con ZOMBIE —
+PORTAL exponente(DIAMANTE base, DIAMANTE exp) {
+    DIAMANTE r;
+    r = 1;
+    DIAMANTE c;
+    c = exp;
+    ZOMBIE (c > 0) {
+        r = r * base;
+        c = c - 1;
+    }
+    LETRERO(r);
+    TESORO r;
+}
+
+// — Programa principal interactivo sin '||' ni else-if —
+DIAMANTE opcion;
+DIAMANTE v1;
+DIAMANTE v2;
+
+opcion = 0;
+ZOMBIE (opcion != 6) {
+    // Mostrar menú
+    LETRERO("== Calculadora Interactive ==");
+    LETRERO("1. Suma");
+    LETRERO("2. Resta");
+    LETRERO("3. Multiplicacion");
+    LETRERO("4. Division");
+    LETRERO("5. Exponente");
+    LETRERO("6. Salir");
+    LETRERO("Elija opcion (1-6):");
+    HORNO(opcion);
+
+    ENDER (opcion == 1) {
+        LETRERO("Ingresa primer numero:");
+        HORNO(v1);
+        LETRERO("Ingresa segundo numero:");
+        HORNO(v2);
+        suma(v1, v2);
+    }
+    ENDER (opcion == 2) {
+        LETRERO("Ingresa primer numero:");
+        HORNO(v1);
+        LETRERO("Ingresa segundo numero:");
+        HORNO(v2);
+        resta(v1, v2);
+    }
+    ENDER (opcion == 3) {
+        LETRERO("Ingresa primer numero:");
+        HORNO(v1);
+        LETRERO("Ingresa segundo numero:");
+        HORNO(v2);
+        mult(v1, v2);
+    }
+    ENDER (opcion == 4) {
+        LETRERO("Ingresa primer numero:");
+        HORNO(v1);
+        LETRERO("Ingresa segundo numero:");
+        HORNO(v2);
+        divi(v1, v2);
+    }
+    ENDER (opcion == 5) {
+        LETRERO("Ingresa base:");
+        HORNO(v1);
+        LETRERO("Ingresa exponente:");
+        HORNO(v2);
+        exponente(v1, v2);
+    }
+    ENDER (opcion == 6) {
+        LETRERO("Saliendo...");
+    }
+    // Detectar opciones inválidas: dos bloques ENDER separados
+    ENDER (opcion < 1) {
+        LETRERO("Opcion invalida, intente de nuevo");
+    }
+    ENDER (opcion > 6) {
+        LETRERO("Opcion invalida, intente de nuevo");
+    }
+}
