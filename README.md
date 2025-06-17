@@ -113,7 +113,7 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 
 ## Nuestras Operaciones aritmeticas 
 ```bison
- suma (+), resta (-), multiplicación (*), división (/) y módulo (%), 
+ suma (+), resta (-), multiplicación (*), división (/).
 ```
 
 
