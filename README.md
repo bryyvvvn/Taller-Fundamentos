@@ -2,7 +2,7 @@
 
 ## Manual de uso 📖
 
-Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para abrir el terminal) 
+Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para abrir el terminal en VSC) 
 
 
 
@@ -103,29 +103,13 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
   usando una estructura del tipo ENDER-CREEPER ENDER-CREEPER (equivalente a if-else).
 ```
 
-### Estructuras Repetitivas (ZOMBIE, FORJA):
+### Estructuras Repetitivas (ZOMBIE):
 ```bison
-   Facilitan repetir instrucciones mientras se cumplan condiciones específicas (ZOMBIE).
-   Un bucle con avance definido explícitamente por el usuario (usando STEP).
-   Un bucle que recorre automáticamente un rango definido implícitamente.
+   Facilita repetir instrucciones mientras se cumplan condiciones específicas (ZOMBIE).
+   Un bucle que recorre automáticamente hasta que se cumpla una condición acordada.
 ```
 
 ## Nuestras reglas de asignaciones
-
-### Gestión de Variables Simples y Compuestas (Listas):
-```bison
- Permite declarar variables básicas y estructuras más avanzadas, como listas.
- Se pueden crear listas vacías o listas ya inicializadas con elementos concretos.
- También es posible acceder y modificar elementos específicos dentro de estas listas mediante índices.
-```
-
-
-### Operaciones Incremento (++) y Decremento (--):
-```bison
-   Facilita modificar rápidamente valores numéricos usando operadores especiales
-   Las variables pueden incrementarse (++) o decrementarse (--) directamente
-   simplificando la actualización de sus valores.
-```
 
 ## Nuestras Operaciones aritmeticas 
 ```bison
