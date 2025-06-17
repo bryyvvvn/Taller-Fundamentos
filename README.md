@@ -96,6 +96,14 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 
 
 ## Nuestras reglas Sintacticas principales al crear el codigo 
+
+### Tipos de datos (DIAMANTES,LAVA Y LIBRO)
+```bison
+  DIAMANTE gestiona valores enteros sin decimales (como contadores o índices),
+  LAVA maneja números con parte fraccionaria (útil para cálculos precisos con decimales),
+  LIBRO almacena texto completo (mensajes, nombres o cualquier cadena de caracteres).
+```
+
 ### Estructuras Condicionales (ENDER, CREEPER):
 ```bison
   Permiten ejecutar bloques según el resultado de condiciones evaluadas como verdaderas o falsas
@@ -108,8 +116,19 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
    Facilita repetir instrucciones mientras se cumplan condiciones específicas (ZOMBIE).
    Un bucle que recorre automáticamente hasta que se cumpla una condición acordada.
 ```
+### Funciones y Flujo de Ejecución (PORTAL, LETRERO, TESORO):
+```bison
+El PORTAL define una nueva función en tu programa.
+El LETRERO imprime uno o varios valores en pantalla, agregando salto de línea al final.
+El TESORO devuelve un valor desde el interior de una función y finaliza su ejecución.
+```
 
-## Nuestras reglas de asignaciones
+### Entrada de valores (HORNO):
+```bison
+Permite pausar la ejecución y leer un valor ingresado por el usuario desde el teclado. 
+La variable destino debe estar declarada previamente.  
+Soporta lectura de DIAMANTE, LAVA y LIBRO según el tipo de la variable.
+```
 
 ## Nuestras Operaciones aritmeticas 
 ```bison
@@ -117,7 +136,7 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 ```
 
 
-## Para Funciones 
+
 
 ### Funciones con Parámetros Opcionales:
 ```bison
@@ -135,9 +154,9 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 ```
 
 ## Para imprimir
-
-Utiliza la palabra clave LETRERO para imprimir resultados o mensajes directamente en la pantalla. 
-
+```bison
+  Utiliza la palabra clave LETRERO para imprimir resultados o mensajes directamente en la pantalla. 
+```
 
 
 
