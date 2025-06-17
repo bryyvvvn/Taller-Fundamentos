@@ -49,16 +49,16 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 ```bison
 /* Literales */
 %token <ival> NUM           /* literal entero (ej. 42) */
-%token <fval> DEC           /* literal flotante (ej. 3.14) */
+%token <fval> DECIMAL       /* literal flotante (ej. 3.14) */
 %token <sval> CADENA        /* literal string entre comillas */
 
 /* Identificadores */
-%token <sval> IDENTIFIER    /* nombres de variables y funciones */
+%token <sval>    ID         /* nombres de variables y funciones */
 
 /* Tipos de datos (Minecraft → C) */
-%token INT                   /* “DIAMANTE” → int */
-%token FLOAT                 /* “LAVA”     → float */
-%token STRING                /* “LIBRO”    → string (char*) */
+%token <tipoVar> INT                /* “DIAMANTE” → int */
+%token <tipoVar> FLOAT              /* “LAVA”     → float */
+%token <tipoVar> STRING             /* “LIBRO”    → string (char*) */
 
 /* Palabras de control */
 %token IF                    /* “ENDER”    → if */
@@ -73,24 +73,29 @@ Para compilar el codigo , poner lo siguiente en el terminal ( Ctrl + ñ  para ab
 %token FUNC                  /* “PORTAL”   → func */
 %token RETORNO               /* “TESORO”   → return */
 
-/* Operadores */
-%token ASSIGNOP              /* =  (asignación) */
-%token PLUS MINUS            /* +  - (suma/resta) */
-%token TIMES DIV MOD         /* *  /  % (mult, div, módulo) */
+/* Operadores aritméticos */
+%token           ADICION            /* + */
+%token           RESTACION          /* - */
+%token           MULTIPLICATEICHON  /* * */
+%token           DIVISEISHON        /* / */
 
-/* Relacionales */
-%token EQ_OP NE_OP           /* ==  != */
-%token LT_OP LE_OP           /* <   <= */
-%token GT_OP GE_OP           /* >   >= */
+/* Operadores relacionales */
+%token           IGUALEICHON        /* == */
+%token           DIFERENTEICHON     /* != */
+%token           MENOR_A            /* < */
+%token           MENOR_O_IGUAL_A    /* <= */
+%token           MAYOR_A            /* > */
+%token           MAYOR_O_IGUAL_A    /* >= */
 
-/* Lógicos */
-%token AND OR                /* &&  || */
-%token NOT                   /* ! */
+/* Asignación */
+%token           ASSIGN             /* = */
 
-/* Delimitadores y símbolos */
-%token COMMA SEMICOLON       /* ,  ; */
-%token LP RP                 /* (  ) */
-%token LB RB                 /* {  } */
+/* Puntuación y delimitadores */
+%token           SEMICOLON          /* ; */
+%token           COMMA              /* , */
+%token           LPAREN RPAREN      /* ( ) */
+%token           LBRACE RBRACE      /* { } */
+%token           LSQUARE RSQUARE    /* [ ] */
 ```
 
 
