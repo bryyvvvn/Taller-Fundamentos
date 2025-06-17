@@ -163,5 +163,11 @@ Soporta lectura de DIAMANTE, LAVA y LIBRO según el tipo de la variable.
   Utiliza la palabra clave LETRERO para imprimir resultados o mensajes directamente en la pantalla. 
 ```
 
+### Integrantes del github 
+```bison
+  Benjamin Bustamante 21.507.588-5 benjamin.bustamante@alumnos.ucn.cl 
+  Bryan Carvajal 21.177.361-8 bryan.carvajal@alumnos.ucn.cl
+```
+
 
 
