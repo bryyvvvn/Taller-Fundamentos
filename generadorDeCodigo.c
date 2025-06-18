@@ -161,7 +161,7 @@ void generarCodigoPrint(ASTNode *nodo) {
 
 
 
-// Función para generar código de lectura (read)
+// Función para generar código de lectura (input)
 void generarCodigoRead(ASTNode *nodo) {
     if(nodo->dato.readNode.index){
         fprintf(salida, "HORNO(\"%%d\", &%s[", nodo->dato.readNode.id);
@@ -284,6 +284,7 @@ void generarCodigoFuncion(ASTNode *nodo){
 void generarCodigo(ASTNode *nodo){
     inicializarSalida(); // abre archivo
      fprintf(salida, "#include <stdio.h>\n"); //escribe codigo inicial en c
+     /*Se definen todas las variables de mi lexico*/
     fprintf(salida, "#define DIAMANTE int\n");
     fprintf(salida, "#define LAVA float\n");
     fprintf(salida, "#define LIBRO char*\n");

@@ -54,7 +54,7 @@ ASTNode *raiz = NULL; //Raiz del AST
 %type <tipoVar>   tipo
 %type <nodo>   expresion
 
-/* declaración de todos los no-terminales que usan $$ = <ASTNode*> */
+/* declaración de todos los no-terminales */
 %type <nodo>   programa
 %type <nodo>   lista_sentencias sentencia
 %type <nodo>   declaracion_variable asignacion

@@ -168,5 +168,5 @@ ASTNode *crearNodoLlamada       (const char *id, ASTNode *args);
 ASTNode *crearNodoParametro     (VarType varType, const char *id);
 ASTNode *crearNodoReturn        (ASTNode *expr);
 
-/* Imprime el AST completo (recursivo + siblings) */
+/* Imprime el AST completo (recursivo) */
 void imprimirAST(ASTNode *nodo, int nivel);
